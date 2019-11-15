@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-restaurant',
@@ -7,22 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RestaurantComponent implements OnInit {
 
-  restaurants: any = [
-    {
-      Id: '1',
-      Name: 'Restaurante1',
-      Address: 'Address1'
-    },
-    {
-      Id: '2',
-      Name: 'Restaurante2',
-      Address: 'Address2'
-    }
-];
+  restaurants: any;
 
-  constructor() { }
+  constructor(private http: HttpClient) {  }
 
   ngOnInit() {
+    this.getAllRestaurants();
+  }
+
+  getAllRestaurants(){
+    this.http.get('http://localhost:5000/api/values').subscribe( response => {
+          this.restaurants = response;
+        }, error => { 
+          console.log(error);
+        });
   }
 
 }
