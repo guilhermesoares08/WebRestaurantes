@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RestaurantComponent implements OnInit {
 
-  restaurants: any;
+  restaurants: any = [];
 
   constructor(private http: HttpClient) {  }
 
@@ -19,7 +19,7 @@ export class RestaurantComponent implements OnInit {
   getAllRestaurants(){
     this.http.get('http://localhost:5000/api/values').subscribe( response => {
           this.restaurants = response;
-        }, error => { 
+        }, error => {
           console.log(error);
         });
   }

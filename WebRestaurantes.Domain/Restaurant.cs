@@ -1,4 +1,4 @@
-namespace Entities.Lib
+namespace WebRestaurantes.Domain
 {
     public class Restaurant
     {
