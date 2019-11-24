@@ -16,8 +16,8 @@ export class RestaurantComponent implements OnInit {
     this.getAllRestaurants();
   }
 
-  getAllRestaurants(){
-    this.http.get('http://localhost:5000/api/values').subscribe( response => {
+  getAllRestaurants() {
+    this.http.get('http://localhost:5000/api/restaurant').subscribe( response => {
           this.restaurants = response;
         }, error => {
           console.log(error);

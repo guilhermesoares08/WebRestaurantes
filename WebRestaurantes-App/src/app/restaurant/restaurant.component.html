@@ -1,12 +1,25 @@
-<p>
-  restaurant works!
-</p>
 
-<div *ngFor="let res of restaurants">
-  Id: {{res.Id}}
-  <br>
-  Nome: {{res.Name}}
-  <br>
-  Endereço: {{res.Address}}
-  <hr>
-</div>
+<form class="form-inline">
+  <div class="form-group mb-2">
+    <input type="text" class="form-control-mr-2" placeholder="buscar">
+    <button class="btn btn-outline-success">buscar</button>
+  </div>
+</form>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let res of restaurants">
+    <td>{{res.id}}</td>
+    <td>{{res.description}}</td>
+    <td>{{res.email}}</td>
+    <td></td>
+    </tr>
+  </tbody>
+</table>

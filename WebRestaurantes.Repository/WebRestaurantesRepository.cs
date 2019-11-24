@@ -47,7 +47,7 @@ namespace WebRestaurantes.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<Restaurant> GetRestaurantAsyncById(int id, bool includeImages = false)
+        public async Task<Restaurant> GetRestaurantAsyncById(int id, bool includeImages = true)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;
             if (includeImages)
