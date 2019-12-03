@@ -1,10 +1,15 @@
-
-<form class="form-inline">
+<div class="form-inline">
   <div class="form-group mb-2">
-    <input type="text" class="form-control-mr-2" placeholder="buscar">
+    <input
+      type="text"
+      class="form-control-mr-2"
+      placeholder="buscar"
+      [(ngModel)]="filtroLista"
+    />
     <button class="btn btn-outline-success">buscar</button>
   </div>
-</form>
+</div>
+<h3><label class="mr-2">Filtro:</label> {{ filtroLista }}</h3>
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
@@ -14,12 +19,23 @@
       <th>Opções</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let res of restaurants">
-    <td>{{res.id}}</td>
-    <td>{{res.description}}</td>
-    <td>{{res.email}}</td>
-    <td></td>
+  <tbody *ngIf="restaurants && restaurants.length">
+    <tr *ngFor="let res of filteredRestaurants">
+      <td>{{ res.id }}</td>
+      <td>{{ res.description }}</td>
+      <td>{{ res.email | uppercase }}</td>
+      <td>
+        <button class="btn btn-success"></button>
+        <button class="btn btn-danger"></button>
+      </td>
     </tr>
   </tbody>
+  <footer *ngIf="!restaurants || !restaurants.length">
+    <tr>
+      <td colspan="5" class="text-center"></td>
+      <h4>
+        Nenhum restaurante encontrado!
+      </h4>
+    </tr>
+  </footer>
 </table>
