@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { RestaurantService } from '../_services/Restaurant.service';
+import { Restaurant } from '../_models/Restaurant';
 
 @Component({
   selector: 'app-restaurant',
@@ -9,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
 export class RestaurantComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   _filtroLista: string;
-  restaurants: any = [];
-  filteredRestaurants: any = [];
+  restaurants: Restaurant[];
+  filteredRestaurants: Restaurant[];
   get filtroLista(): string {
     return this._filtroLista;
   }
@@ -22,16 +23,18 @@ export class RestaurantComponent implements OnInit {
       : this.restaurants;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private restaurantService: RestaurantService) {}
 
   ngOnInit() {
     this.getAllRestaurants();
   }
 
   getAllRestaurants() {
-    this.http.get('http://localhost:5000/api/restaurant').subscribe(
-      response => {
-        this.restaurants = response;
+    this.restaurantService.getAllRestaurant().subscribe(
+      // tslint:disable-next-line: variable-name
+      (_restaurants: Restaurant[]) => {
+        this.restaurants = _restaurants;
+        this.filteredRestaurants = this.restaurants;
       },
       error => {
         console.log(error);
@@ -39,7 +42,7 @@ export class RestaurantComponent implements OnInit {
     );
   }
 
-  filtrarRestaurants(filterBy: string): any {
+  filtrarRestaurants(filterBy: string): Restaurant[] {
     filterBy = filterBy.toLocaleLowerCase();
     return this.restaurants.filter(
       rest => rest.description.toLocaleLowerCase().indexOf(filterBy) !== -1

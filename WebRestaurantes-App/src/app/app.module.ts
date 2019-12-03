@@ -7,22 +7,18 @@ import { RestaurantComponent } from './restaurant/restaurant.component';
 import { fromEventPattern } from 'rxjs';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule } from '@angular/forms';
+import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
+import { RestaurantService } from './_services/Restaurant.service';
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      RestaurantComponent,
-      NavComponent
-   ],
-   imports: [
-      BrowserModule,
-      AppRoutingModule,
-      HttpClientModule,
-      FormsModule
-   ],
-   providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+  declarations: [
+    AppComponent,
+    RestaurantComponent,
+    NavComponent,
+    DateTimeFormatPipePipe
+  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  providers: [RestaurantService],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

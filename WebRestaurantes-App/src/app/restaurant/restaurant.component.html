@@ -16,6 +16,7 @@
       <th>#</th>
       <th>Nome</th>
       <th>Email</th>
+      <th>Data Criação</th>
       <th>Opções</th>
     </tr>
   </thead>
@@ -24,6 +25,7 @@
       <td>{{ res.id }}</td>
       <td>{{ res.description }}</td>
       <td>{{ res.email | uppercase }}</td>
+      <td>{{ res.createDate | DateTimeFormatPipe}}</td>
       <td>
         <button class="btn btn-success"></button>
         <button class="btn btn-danger"></button>

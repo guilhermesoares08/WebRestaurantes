@@ -13,7 +13,7 @@ namespace WebRestaurantes.Repository.DataContext
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
         // {
-        //     modelBuilder.
+        //     //modelBuilder.Entity<
         // }
     }
 }
