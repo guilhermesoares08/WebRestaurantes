@@ -25,10 +25,16 @@
       <td>{{ res.id }}</td>
       <td>{{ res.description }}</td>
       <td>{{ res.email | uppercase }}</td>
-      <td>{{ res.createDate | DateTimeFormatPipe}}</td>
+      <td>{{ res.createDate | DateTimeFormatPipe }}</td>
       <td>
-        <button class="btn btn-success"></button>
-        <button class="btn btn-danger"></button>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-success" tooltip="Editar" (click)="openModal(template)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" tooltip="Excluir">
+            <i class="fa fa-eraser"></i>
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>
@@ -41,3 +47,57 @@
     </tr>
   </footer>
 </table>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    this is a modal.
+  </div>
+</ng-template>
+
+<form [formGroup]='registerForm'>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label>Nome</label>
+        <input type="text" class="form-control" 
+        [ngClass]="{'is-invalid': registerForm.get('txtDescription').errors 
+                                    && registerForm.get('txtDescription').touched}"
+         formControlName="txtDescription">
+        <div class="invalid-feedback">
+          Nome é obrigatório!
+        </div>
+      </div>
+    </div>  
+    <div class="form-row">
+      <div class="form-group col-md-8">
+        <label>Email</label>
+        <input type="text" class="form-control"
+        [ngClass]="{'is-invalid': registerForm.get('txtEmail').errors 
+                                    && registerForm.get('txtEmail').touched}"
+        formControlName="txtEmail">
+        <div class="invalid-feedback">
+            Email é obrigatório!
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Imagem</label>
+        <input type="text" class="form-control" 
+        formControlName="imageURL">
+      </div>
+    </div>  
+    
+</form>
+  <br>
+  <button class="btn btn-secondary" (click)="openModal(template)">
+    Fechar
+  </button>
+  <button class="btn btn-primary" (click)="salvarAlteracao()">
+    Salvar Alterações
+  </button>
+  <br>
+  <br>

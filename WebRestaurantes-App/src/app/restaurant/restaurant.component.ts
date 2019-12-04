@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { RestaurantService } from '../_services/Restaurant.service';
 import { Restaurant } from '../_models/Restaurant';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-restaurant',
@@ -12,6 +14,9 @@ export class RestaurantComponent implements OnInit {
   _filtroLista: string;
   restaurants: Restaurant[];
   filteredRestaurants: Restaurant[];
+  modalRef: BsModalRef;
+  registerForm: FormGroup;
+
   get filtroLista(): string {
     return this._filtroLista;
   }
@@ -23,10 +28,11 @@ export class RestaurantComponent implements OnInit {
       : this.restaurants;
   }
 
-  constructor(private restaurantService: RestaurantService) {}
+  constructor(private restaurantService: RestaurantService, private modalService: BsModalService) {}
 
   ngOnInit() {
     this.getAllRestaurants();
+    this.validation();
   }
 
   getAllRestaurants() {
@@ -47,5 +53,21 @@ export class RestaurantComponent implements OnInit {
     return this.restaurants.filter(
       rest => rest.description.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  salvarAlteracao() {
+
+  }
+
+  validation() {
+    this.registerForm = new FormGroup({
+      txtDescription: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]),
+      txtEmail: new FormControl('', [Validators.required, Validators.email]),
+      imageURL: new FormControl('', Validators.required)
+    });
   }
 }
