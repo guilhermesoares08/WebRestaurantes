@@ -1,8 +1,13 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { RestaurantService } from '../_services/Restaurant.service';
 import { Restaurant } from '../_models/Restaurant';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService, BsLocaleService } from 'ngx-bootstrap';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
 
 @Component({
   selector: 'app-restaurant',
@@ -14,8 +19,13 @@ export class RestaurantComponent implements OnInit {
   _filtroLista: string;
   restaurants: Restaurant[];
   filteredRestaurants: Restaurant[];
+  restaurant: Restaurant;
   modalRef: BsModalRef;
   registerForm: FormGroup;
+  disabledDates = [
+    new Date('2019-12-05'),
+    new Date('2019-12-09')
+  ];
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -28,7 +38,14 @@ export class RestaurantComponent implements OnInit {
       : this.restaurants;
   }
 
-  constructor(private restaurantService: RestaurantService, private modalService: BsModalService) {}
+  constructor(
+    private restaurantService: RestaurantService,
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private localeService: BsLocaleService
+  ) {
+    this.localeService.use('pt-br');
+  }
 
   ngOnInit() {
     this.getAllRestaurants();
@@ -55,19 +72,31 @@ export class RestaurantComponent implements OnInit {
     );
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  openModal(template: any) {
+    template.show();
   }
 
   salvarAlteracao() {
-
+    if (this.registerForm.valid) {
+      this.restaurant = Object.assign({}, this.registerForm.value);
+      this.restaurantService.postRestaurant(this.restaurant);
+    }
   }
 
   validation() {
-    this.registerForm = new FormGroup({
-      txtDescription: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(100)]),
-      txtEmail: new FormControl('', [Validators.required, Validators.email]),
-      imageURL: new FormControl('', Validators.required)
+    this.registerForm = this.fb.group({
+      txtDescription: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(100)
+        ]
+      ],
+      txtEmail: ['', [Validators.required, Validators.email]],
+      imageURL: ['', Validators.required],
+      txtScheduleDate: ['', Validators.required],
+      txtScheduleHour: ['', Validators.required]
     });
   }
 }

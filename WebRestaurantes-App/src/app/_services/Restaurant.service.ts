@@ -21,4 +21,8 @@ export class RestaurantService {
   getRestaurantByText(text: string): Observable<Restaurant[]> {
     return this.http.get<Restaurant[]>(`${this.baseUrl}/getByText/${text}`);
   }
+
+  postRestaurant(rest: Restaurant) {
+    return this.http.post(`${this.baseUrl}`, rest);
+  }
 }
