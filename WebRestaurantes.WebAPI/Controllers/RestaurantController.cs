@@ -51,13 +51,14 @@ namespace ProAgil.WebAPI.Controllers
             try
             {
                 var results = await _repo.GetRestaurantAsyncById(id, true);
+                var resultMap = _mapper.Map<RestaurantDto>(results);
 
                 return Ok(results);
             }
             catch (System.Exception ex)
             {
                 string innerEx = "";//ex.InnerException.Message;
-                string exMessage  = ex.Message;
+                string exMessage = ex.Message;
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
         }
@@ -75,7 +76,7 @@ namespace ProAgil.WebAPI.Controllers
             catch (System.Exception ex)
             {
                 string innerEx = ex.InnerException.Message;
-                string exMessage  = ex.Message;
+                string exMessage = ex.Message;
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
         }
@@ -86,7 +87,6 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                
                 var resResult = _mapper.Map<Restaurant>(model);
                 resResult.CreateDate = DateTime.Now;
                 resResult.UpdateDate = DateTime.Now;
@@ -99,7 +99,7 @@ namespace ProAgil.WebAPI.Controllers
             catch (System.Exception ex)
             {
                 string innerEx = ex.InnerException.Message;
-                string exMessage  = ex.Message;
+                string exMessage = ex.Message;
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
 
@@ -114,13 +114,25 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var rest = await _repo.GetRestaurantAsyncById(id);
                 if (rest == null) { return NotFound(); };
-                rest.UpdateDate = DateTime.Now;
+
+                var idsAddressess = new List<int>();
+                if (model.Address != null && model.Address.Count > 0)
+                {
+                    model.Address.ForEach(item => idsAddressess.Add(item.Id));
+                    var addressess = rest.Address.Where(
+                        addr => !idsAddressess.Contains(addr.Id)
+                    ).ToArray();
+
+                    if (addressess.Length > 0) _repo.DeleteRange(addressess);
+                }
+                model.UpdateDate = DateTime.Now.ToString();
+                model.CreateDate = rest.CreateDate.ToString();                
                 _mapper.Map(model, rest);
                 _repo.Update(rest);
 
                 if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/api/restaurant/{model.Id}", model);
+                    return Created($"/api/restaurant/{model.Id}", _mapper.Map<RestaurantDto>(rest));
                 }
             }
             catch (System.Exception ex)

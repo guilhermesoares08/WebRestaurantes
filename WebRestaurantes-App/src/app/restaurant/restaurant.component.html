@@ -16,8 +16,8 @@
   </div>
 
   <div>
-    <button class="btn btn-outline-primary" (click)="template.show()">
-      <i class="fa fa-plus-circle"></i>&nbsp; Novo agendamento
+    <button class="btn btn-outline-primary" (click)="novoRestaurante(template)">
+      <i class="fa fa-plus-circle"></i>&nbsp; Novo restaurante
     </button>
   </div>
 </div>
@@ -44,7 +44,7 @@
           <button
             class="btn btn-sm btn-success"
             tooltip="Editar"
-            (click)="openModal(template)"
+            (click)="editarRestaurante(res, template)"
           >
             <i class="fa fa-edit"></i>
           </button>

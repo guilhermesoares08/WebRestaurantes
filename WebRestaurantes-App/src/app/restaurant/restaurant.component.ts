@@ -1,15 +1,17 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { RestaurantService } from '../_services/Restaurant.service';
 import { Restaurant } from '../_models/Restaurant';
-import { BsModalRef, BsModalService, BsLocaleService } from 'ngx-bootstrap';
+import { RestaurantAddress } from '../_models/RestaurantAddress';
+import { BsModalRef, BsModalService, BsLocaleService, Utils } from 'ngx-bootstrap';
 import {
   FormGroup,
   FormControl,
   Validators,
   FormBuilder
 } from '@angular/forms';
-
+import { Constants } from '../util/Constants';
 import { ToastrService } from 'ngx-toastr';
+import { utils } from 'protractor';
 
 @Component({
   selector: 'app-restaurant',
@@ -19,9 +21,11 @@ import { ToastrService } from 'ngx-toastr';
 export class RestaurantComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   title = 'Meus restaurantes';
+  modoSalvar: string;
   _filtroLista: string;
   scheduleDate: string;
   restaurants: Restaurant[];
+  restaurantAddress: any = [];
   filteredRestaurants: Restaurant[];
   restaurant: Restaurant;
   modalRef: BsModalRef;
@@ -87,20 +91,61 @@ export class RestaurantComponent implements OnInit {
     this.registerForm.reset();
     template.hide();
   }
+  criaEndereco(endereco: any): FormGroup {
+    return this.fb.group({
+      address: [endereco.address],
+      cityId: [endereco.url]
+    });
+  }
+
+  novoRestaurante(template: any) {
+    this.modoSalvar = 'post';
+    this.openModal(template);
+  }
+
+  editarRestaurante(restaurante: Restaurant, template: any) {
+    this.modoSalvar = 'put';
+    this.openModal(template);
+    this.restaurant = Object.assign({}, restaurante);
+    this.registerForm.patchValue(this.restaurant);
+  }
 
   salvarAlteracao(template: any) {
+
     if (this.registerForm.valid) {
-      this.restaurant = Object.assign({}, this.registerForm.value);
-      this.restaurant.environmentId = 'teste';
-      this.restaurantService.postRestaurant(this.restaurant).subscribe(
-        (responseRestaurant: Restaurant) => {
-          template.hide();
-          this.getAllRestaurants();
-          this.toastr.success('Inserido com Sucesso!');
-        }, error => {
-          this.toastr.error(`Erro ao Inserir: ${error}`);
+      if (this.modoSalvar === Constants.HTTPMETHOD_POST) {
+        this.restaurant = Object.assign({}, this.registerForm.value);
+        this.restaurant.environmentId = 'teste';
+        this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
+        this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
+        // this.restaurant.addresses.push(this.restaurantAddress);
+        this.restaurantService.postRestaurant(this.restaurant).subscribe(
+          (responseRestaurant: Restaurant) => {
+            template.hide();
+            this.getAllRestaurants();
+            this.toastr.success('Inserido com Sucesso!');
+          }, error => {
+            this.toastr.error(`Erro ao Inserir: ${error}`);
+          }
+        );
+      } else {
+        this.restaurant = Object.assign({ id: this.restaurant.id, createdate: this.restaurant.createDate }, this.registerForm.value);
+        this.restaurant.environmentId = 'teste';
+        if (this.restaurant.addresses != null) {
+          this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
+          this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         }
-      );
+        this.restaurantService.putRestaurant(this.restaurant).subscribe(
+          (responseRestaurant: Restaurant) => {
+            template.hide();
+            this.getAllRestaurants();
+            this.toastr.success('Inserido com Sucesso!');
+          }, error => {
+            this.toastr.error(`Erro ao Inserir: ${error}`);
+          }
+        );
+      }
+
     }
   }
 

@@ -1,6 +1,6 @@
 import { Restaurant } from './Restaurant';
 
-export interface RestaurantAddress {
+export class RestaurantAddress {
     id: number;
     address: string;
     number: number;
@@ -9,5 +9,4 @@ export interface RestaurantAddress {
     restaurantId: number;
     createDate: Date;
     updateDate: Date;
-    restaurant: Restaurant;
 }

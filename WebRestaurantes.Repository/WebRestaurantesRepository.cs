@@ -36,6 +36,11 @@ namespace WebRestaurantes.Repository
             return (await _webRestaurantesContext.SaveChangesAsync()) > 0;
         }
 
+        public void DeleteRange<T>(T[] entityArray) where T : class
+        {
+            _webRestaurantesContext.RemoveRange(entityArray);
+        }
+
         public async Task<List<Restaurant>> GetAllRestaurantAsync(bool includeImages = true)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;

@@ -27,7 +27,7 @@ export class RestaurantService {
   }
 
   putRestaurant(rest: Restaurant) {
-    return this.http.put(`${this.baseUrl}`, rest);
+    return this.http.put(`${this.baseUrl}/${rest.id}`, rest);
   }
 
   deleteRestaurant(id: number) {

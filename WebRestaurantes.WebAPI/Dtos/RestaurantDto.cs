@@ -12,8 +12,8 @@ namespace WebRestaurantes.WebAPI.Dtos
         public string Description { get; set; }
         [Required (ErrorMessage="O Campo {0} é Obrigatório")]
         public string Email { get; set; }        
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public string CreateDate { get; set; }
+        public string UpdateDate { get; set; }
         public string VendorId { get; set; }        
         public string EnvironmentId { get; set; }        
         public List<ImageDto> Images { get; set; }

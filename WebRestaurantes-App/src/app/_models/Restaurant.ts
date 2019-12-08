@@ -1,6 +1,7 @@
 import { Image } from './Image';
+import { RestaurantAddress } from './RestaurantAddress';
 
-export interface Restaurant {
+export class Restaurant {
   id: number;
   description: string;
   email: string;
@@ -10,4 +11,5 @@ export interface Restaurant {
   vendorId: string;
   environmentId: string;
   images: Image[];
+  addresses: RestaurantAddress[];
 }
