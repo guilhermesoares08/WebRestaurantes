@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { TooltipModule, ModalModule, BsDropdownModule, CarouselComponent } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 import { defineLocale, BsLocaleService, ptBrLocale, BsDatepickerModule } from 'ngx-bootstrap';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 defineLocale('pt-br', ptBrLocale);
@@ -20,9 +22,6 @@ import { fromEventPattern } from 'rxjs';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { MidbodyComponent } from './midbody/midbody.component';
-
-
-
 
 @NgModule({
    declarations: [
@@ -44,8 +43,9 @@ import { MidbodyComponent } from './midbody/midbody.component';
       ModalModule.forRoot(),
       ReactiveFormsModule,
       BsDatepickerModule.forRoot(),
-      BrowserAnimationsModule,
-      TimepickerModule.forRoot()
+      TimepickerModule.forRoot(),
+      BrowserAnimationsModule, // required animations module
+      ToastrModule.forRoot() // ToastrModule added
    ],
    providers: [
       RestaurantService

@@ -26,9 +26,10 @@ namespace WebRestaurantes.Repository.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RestaurantExtension>()
-            .HasOne(s => s.DomainInfo)
+            .HasOne(s => s.DomainValue)
             .WithMany()
-            .HasForeignKey(e => e.OptionId);            
+            .HasForeignKey(e => e.DomainValueId)            
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

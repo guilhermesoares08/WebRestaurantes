@@ -16,6 +16,25 @@ namespace WebRestaurantes.Repository.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0");
 
+            modelBuilder.Entity("WebRestaurantes.Domain.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("City");
+                });
+
             modelBuilder.Entity("WebRestaurantes.Domain.Domain", b =>
                 {
                     b.Property<int>("Id")
@@ -65,7 +84,7 @@ namespace WebRestaurantes.Repository.Migrations
                     b.Property<string>("Extension")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("RestaurantId")
+                    b.Property<int>("RestaurantId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("URL")
@@ -119,7 +138,7 @@ namespace WebRestaurantes.Repository.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreateDate")
@@ -139,6 +158,8 @@ namespace WebRestaurantes.Repository.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId");
+
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("RestaurantAddress");
@@ -150,33 +171,96 @@ namespace WebRestaurantes.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid?>("DomainValueId")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("OptionId")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OptionId");
+                    b.HasIndex("DomainValueId");
 
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("RestaurantExtension");
                 });
 
+            modelBuilder.Entity("WebRestaurantes.Domain.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Acronym")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("State");
+                });
+
+            modelBuilder.Entity("WebRestaurantes.Domain.Table", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsBusy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Seats")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("VendorId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Table");
+                });
+
+            modelBuilder.Entity("WebRestaurantes.Domain.City", b =>
+                {
+                    b.HasOne("WebRestaurantes.Domain.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WebRestaurantes.Domain.Image", b =>
                 {
                     b.HasOne("WebRestaurantes.Domain.Restaurant", null)
                         .WithMany("Images")
-                        .HasForeignKey("RestaurantId");
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebRestaurantes.Domain.RestaurantAddress", b =>
                 {
+                    b.HasOne("WebRestaurantes.Domain.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
                     b.HasOne("WebRestaurantes.Domain.Restaurant", null)
                         .WithMany("Address")
                         .HasForeignKey("RestaurantId")
@@ -186,12 +270,22 @@ namespace WebRestaurantes.Repository.Migrations
 
             modelBuilder.Entity("WebRestaurantes.Domain.RestaurantExtension", b =>
                 {
-                    b.HasOne("WebRestaurantes.Domain.DomainValue", "DomainInfo")
+                    b.HasOne("WebRestaurantes.Domain.DomainValue", "DomainValue")
                         .WithMany()
-                        .HasForeignKey("OptionId");
+                        .HasForeignKey("DomainValueId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebRestaurantes.Domain.Restaurant", null)
                         .WithMany("Extensions")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebRestaurantes.Domain.Table", b =>
+                {
+                    b.HasOne("WebRestaurantes.Domain.Restaurant", null)
+                        .WithMany("Tables")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

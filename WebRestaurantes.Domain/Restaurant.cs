@@ -15,8 +15,8 @@ namespace WebRestaurantes.Domain
         public string VendorId { get; set; }
         public string EnvironmentId { get; set; }
         public List<Image> Images { get; set; }
-        public RestaurantAddress Address { get; set; }
+        public List<RestaurantAddress> Address { get; set; }
         public List<RestaurantExtension> Extensions { get; set; }
-        public IList<Table> Tables { get; set; }
+        public List<Table> Tables { get; set; }
     }
 }

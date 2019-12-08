@@ -51,10 +51,12 @@ namespace WebRestaurantes.Repository
         public async Task<Restaurant> GetRestaurantAsyncById(int id, bool includeImages = true)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;
-            query = query.Include(r => r.Address);
+            query = query.Include(r => r.Address)
+                            .ThenInclude(a => a.City)
+                            .ThenInclude(c => c.State);
 
             query = query.Include(r => r.Extensions)
-                            .ThenInclude(r => r.DomainInfo);
+                            .ThenInclude(r => r.DomainValue);
             if (includeImages)
             {
                 query = query.Include(r => r.Images);

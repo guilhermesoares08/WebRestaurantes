@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace WebRestaurantes.WebAPI.Dtos
 {
     public class TableDto
@@ -9,6 +11,7 @@ namespace WebRestaurantes.WebAPI.Dtos
 
         public int RestaurantId { get; set; }
 
+        [Range(1, 120000)]
         public int Seats { get; set; }
 
         public string VendorId { get; set; }       

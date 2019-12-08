@@ -9,6 +9,8 @@ import {
   FormBuilder
 } from '@angular/forms';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.component.html',
@@ -43,7 +45,8 @@ export class RestaurantComponent implements OnInit {
     private restaurantService: RestaurantService,
     private modalService: BsModalService,
     private fb: FormBuilder,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private toastr: ToastrService
   ) {
     this.localeService.use('pt-br');
   }
@@ -112,8 +115,10 @@ export class RestaurantComponent implements OnInit {
     this.restaurantService.deleteRestaurant(this.restaurant.id).subscribe(
       () => {
         modal.hide();
+        this.toastr.success('Deletado com sucesso');
         this.getAllRestaurants();
       }, error => {
+        this.toastr.error(`Erro ao tentar deletar: ${error}`);
         console.log(error);
       }
     );

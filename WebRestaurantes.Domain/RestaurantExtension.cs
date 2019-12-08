@@ -6,13 +6,13 @@ namespace WebRestaurantes.Domain
     {
         public int Id { get; set; }
 
-        public Guid? OptionId { get; set; }
+        public Guid? DomainValueId { get; set; }
 
         public int RestaurantId { get; set; }
 
         public bool IsActive { get; set; }
 
-        public DomainValue DomainInfo { get; set; }
+        public DomainValue DomainValue { get; set; }
 
         public RestaurantExtension()
         {

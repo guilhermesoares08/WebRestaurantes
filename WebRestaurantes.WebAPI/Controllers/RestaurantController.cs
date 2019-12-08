@@ -54,9 +54,11 @@ namespace ProAgil.WebAPI.Controllers
 
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                string innerEx = "";//ex.InnerException.Message;
+                string exMessage  = ex.Message;
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
         }
 
@@ -70,9 +72,11 @@ namespace ProAgil.WebAPI.Controllers
 
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                string innerEx = ex.InnerException.Message;
+                string exMessage  = ex.Message;
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
         }
 
@@ -91,7 +95,9 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{ex.Message}");
+                string innerEx = ex.InnerException.Message;
+                string exMessage  = ex.Message;
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
 
             return BadRequest();
@@ -137,9 +143,9 @@ namespace ProAgil.WebAPI.Controllers
                     return Ok();
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou { ex.InnerException }");
             }
 
             return BadRequest();
