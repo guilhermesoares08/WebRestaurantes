@@ -30,7 +30,7 @@ namespace WebRestaurantes.Repository
         {
             _webRestaurantesContext.Update(entity);
         }
-        public async Task<bool> SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
             // retorno maior que 0 adicionou no bd
             return (await _webRestaurantesContext.SaveChangesAsync()) > 0;
@@ -39,6 +39,7 @@ namespace WebRestaurantes.Repository
         public async Task<List<Restaurant>> GetAllRestaurantAsync(bool includeImages = true)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;
+            query = query.Include(d => d.Address);
             if (includeImages)
             {
                 query = query.Include(r => r.Images);
@@ -50,6 +51,10 @@ namespace WebRestaurantes.Repository
         public async Task<Restaurant> GetRestaurantAsyncById(int id, bool includeImages = true)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;
+            query = query.Include(r => r.Address);
+
+            query = query.Include(r => r.Extensions)
+                            .ThenInclude(r => r.DomainInfo);
             if (includeImages)
             {
                 query = query.Include(r => r.Images);
@@ -61,7 +66,7 @@ namespace WebRestaurantes.Repository
         public async Task<List<Restaurant>> GetRestaurantAsyncByText(string text)
         {
             IQueryable<Restaurant> query = _webRestaurantesContext.Restaurants;
-            query = query.Include(r => r.Images);
+            query = query.Include(r => r.Images).Include(r => r.Address);
             if (!string.IsNullOrEmpty(text))
             {
                 text = text.ToLower();

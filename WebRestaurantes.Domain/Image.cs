@@ -7,6 +7,7 @@ namespace WebRestaurantes.Domain
         public int Id { get; set; }
         public string URL { get; set; }
         public string Extension { get; set; }
+        public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; }
     }
 }

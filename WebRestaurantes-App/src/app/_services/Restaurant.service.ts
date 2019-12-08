@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { Restaurant } from "../_models/Restaurant";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Restaurant } from '../_models/Restaurant';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class RestaurantService {
-  baseUrl = "http://localhost:5000/api/restaurant";
+  baseUrl = 'http://localhost:5000/api/restaurant';
   constructor(private http: HttpClient) {}
 
   getAllRestaurant(): Observable<Restaurant[]> {
@@ -24,5 +24,13 @@ export class RestaurantService {
 
   postRestaurant(rest: Restaurant) {
     return this.http.post(`${this.baseUrl}`, rest);
+  }
+
+  putRestaurant(rest: Restaurant) {
+    return this.http.put(`${this.baseUrl}`, rest);
+  }
+
+  deleteRestaurant(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

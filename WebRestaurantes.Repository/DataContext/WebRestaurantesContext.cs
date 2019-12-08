@@ -11,9 +11,24 @@ namespace WebRestaurantes.Repository.DataContext
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Image> Images { get; set; }
 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     //modelBuilder.Entity<
-        // }
+        public DbSet<RestaurantAddress> RestaurantAddress { get; set; }
+
+        public DbSet<RestaurantExtension> RestaurantExtension { get; set; }
+
+        public DbSet<Domain.Domain> Domain { get; set; }
+
+        public DbSet<DomainValue> DomainValue { get; set; }
+
+        public DbSet<City> City { get; set; }
+
+        public DbSet<State> State { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RestaurantExtension>()
+            .HasOne(s => s.DomainInfo)
+            .WithMany()
+            .HasForeignKey(e => e.OptionId);            
+        }
     }
 }

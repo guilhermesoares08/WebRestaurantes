@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Repository.DataContext;
 using WebRestaurantes.Repository.Interfaces;
 using WebRestaurantes.Domain;
-
+using AutoMapper;
+using WebRestaurantes.WebAPI.Dtos;
 
 namespace ProAgil.WebAPI.Controllers
 {
@@ -17,10 +18,12 @@ namespace ProAgil.WebAPI.Controllers
     public class RestaurantController : ControllerBase
     {
         private readonly IWebRestaurantesRepository _repo;
+        private readonly IMapper _mapper;
 
-        public RestaurantController(IWebRestaurantesRepository repo)
+        public RestaurantController(IWebRestaurantesRepository repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         // GET api/values
@@ -31,11 +34,13 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var results = await _repo.GetAllRestaurantAsync(true);
 
-                return Ok(results);
+                var resultMap = _mapper.Map<IEnumerable<RestaurantDto>>(results);
+
+                return Ok(resultMap);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou {ex.Message}");
             }
         }
 
@@ -45,7 +50,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetRestaurantAsyncById(id);
+                var results = await _repo.GetRestaurantAsyncById(id, true);
 
                 return Ok(results);
             }
@@ -55,7 +60,7 @@ namespace ProAgil.WebAPI.Controllers
             }
         }
 
-        // GET api/values/5
+        //  api/values/5
         [HttpGet("getByText/{text}")]
         public async Task<IActionResult> Get(string text)
         {
@@ -73,19 +78,20 @@ namespace ProAgil.WebAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post(Restaurant model)
+        public async Task<IActionResult> Post(RestaurantDto model)
         {
             try
             {
-                _repo.Add(model);
-                if (await _repo.SaveChanges())
+                var resResult = _mapper.Map<Restaurant>(model);
+                _repo.Add(resResult);
+                if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/api/restaurant/{model.Id}", model);
+                    return Created($"/api/restaurant/{model.Id}", _mapper.Map<RestaurantDto>(model));
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{ex.Message}");
             }
 
             return BadRequest();
@@ -93,26 +99,26 @@ namespace ProAgil.WebAPI.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Restaurant model)
+        public async Task<IActionResult> Put(int id, RestaurantDto model)
         {
             try
             {
                 var rest = await _repo.GetRestaurantAsyncById(id);
-                if (rest == null) return NotFound();
+                if (rest == null) { return NotFound(); };
+                _mapper.Map(model, rest);
+                _repo.Update(rest);
 
-                _repo.Update(model);
-
-                if (await _repo.SaveChanges())
+                if (await _repo.SaveChangesAsync())
                 {
                     return Created($"/api/restaurant/{model.Id}", model);
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{ex.Message}");
             }
 
-             return BadRequest();
+            return BadRequest();
         }
 
         // DELETE api/values/5
@@ -126,7 +132,7 @@ namespace ProAgil.WebAPI.Controllers
 
                 _repo.Delete(rest);
 
-                if (await _repo.SaveChanges())
+                if (await _repo.SaveChangesAsync())
                 {
                     return Ok();
                 }
@@ -136,7 +142,7 @@ namespace ProAgil.WebAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou");
             }
 
-             return BadRequest();
+            return BadRequest();
         }
     }
 }

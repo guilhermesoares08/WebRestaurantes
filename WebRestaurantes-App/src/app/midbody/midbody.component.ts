@@ -9,25 +9,18 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-
 @Component({
-  selector: 'app-carousel-template',
-  templateUrl: './carousel-template.component.html',
-  styleUrls: ['./carousel-template.component.css']
+  selector: 'app-midbody',
+  templateUrl: './midbody.component.html',
+  styleUrls: ['./midbody.component.css']
 })
-export class CarouselTemplateComponent implements OnInit {
-  // tslint:disable-next-line: variable-name
+export class MidbodyComponent implements OnInit {
+
   _filtroLista: string;
   restaurants: Restaurant[];
   filteredRestaurants: Restaurant[];
   restaurant: Restaurant;
-  modalRef: BsModalRef;
-  registerForm: FormGroup;
-  disabledDates = [
-    new Date('2019-12-05'),
-    new Date('2019-12-09')
-  ];
-
+  
   get filtroLista(): string {
     return this._filtroLista;
   }
@@ -50,7 +43,6 @@ export class CarouselTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.getAllRestaurants();
-    this.validation();
   }
 
   getAllRestaurants() {
@@ -71,33 +63,5 @@ export class CarouselTemplateComponent implements OnInit {
     return this.restaurants.filter(
       rest => rest.description.toLocaleLowerCase().indexOf(filterBy) !== -1
     );
-  }
-
-  openModal(template: any) {
-    template.show();
-  }
-
-  salvarAlteracao() {
-    if (this.registerForm.valid) {
-      this.restaurant = Object.assign({}, this.registerForm.value);
-      this.restaurantService.postRestaurant(this.restaurant);
-    }
-  }
-
-  validation() {
-    this.registerForm = this.fb.group({
-      txtDescription: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(100)
-        ]
-      ],
-      txtEmail: ['', [Validators.required, Validators.email]],
-      imageURL: ['', Validators.required],
-      txtScheduleDate: ['', Validators.required],
-      txtScheduleHour: ['', Validators.required]
-    });
   }
 }

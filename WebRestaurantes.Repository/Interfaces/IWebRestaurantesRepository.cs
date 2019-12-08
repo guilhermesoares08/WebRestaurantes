@@ -12,7 +12,7 @@ namespace WebRestaurantes.Repository.Interfaces
 
         void Delete<T>(T entity) where T : class;
 
-        Task <bool> SaveChanges();
+        Task <bool> SaveChangesAsync();
 
         Task <List<Restaurant>> GetAllRestaurantAsync(bool includeImages = false);
 

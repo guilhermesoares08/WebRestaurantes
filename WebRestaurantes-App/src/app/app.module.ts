@@ -19,6 +19,7 @@ import { CarouselTemplateComponent } from './carousel-template/carousel-template
 import { fromEventPattern } from 'rxjs';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
+import { MidbodyComponent } from './midbody/midbody.component';
 
 
 
@@ -30,7 +31,8 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
       NavComponent,
       DateTimeFormatPipePipe,
       CarouselComponent,
-      CarouselTemplateComponent
+      CarouselTemplateComponent,
+      MidbodyComponent
    ],
    imports: [
       BrowserModule,

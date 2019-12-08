@@ -16,6 +16,7 @@ using WebRestaurantes.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using AutoMapper;
 
 namespace WebRestaurantes.WebAPI
 {
@@ -39,6 +40,7 @@ namespace WebRestaurantes.WebAPI
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddCors();
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

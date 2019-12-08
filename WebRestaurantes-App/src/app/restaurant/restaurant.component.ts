@@ -26,6 +26,7 @@ export class RestaurantComponent implements OnInit {
     new Date('2019-12-05'),
     new Date('2019-12-09')
   ];
+  bodyDeletarRestaurant = '';
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -73,6 +74,7 @@ export class RestaurantComponent implements OnInit {
   }
 
   openModal(template: any) {
+    this.registerForm.reset();
     template.show();
   }
 
@@ -98,5 +100,22 @@ export class RestaurantComponent implements OnInit {
       txtScheduleDate: ['', Validators.required],
       txtScheduleHour: ['', Validators.required]
     });
+  }
+
+  excluirRestaurante(rest: Restaurant, modal: any) {
+    modal.show();
+    this.restaurant = rest;
+    this.bodyDeletarRestaurant = `Tem certeza que deseja excluir o Restaurante: ${rest.description}, Código: ${rest.id}`;
+  }
+
+  confirmDelete(modal: any) {
+    this.restaurantService.deleteRestaurant(this.restaurant.id).subscribe(
+      () => {
+        modal.hide();
+        this.getAllRestaurants();
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 }
