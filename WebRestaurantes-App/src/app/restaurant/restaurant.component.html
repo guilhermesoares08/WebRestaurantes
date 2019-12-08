@@ -102,15 +102,15 @@
                 class="form-control"
                 [ngClass]="{
                   'is-invalid':
-                    registerForm.get('txtDescription').errors &&
-                    registerForm.get('txtDescription').touched
+                    registerForm.get('description').errors &&
+                    registerForm.get('description').touched
                 }"
-                formControlName="txtDescription"
+                formControlName="description"
               />
               <div
                 *ngIf="
-                  registerForm.get('txtDescription').hasError('required') &&
-                  registerForm.get('txtDescription').touched
+                  registerForm.get('description').hasError('required') &&
+                  registerForm.get('description').touched
                 "
                 class="invalid-feedback"
               >
@@ -118,8 +118,8 @@
               </div>
               <div
                 *ngIf="
-                  registerForm.get('txtDescription').hasError('minlength') &&
-                  registerForm.get('txtDescription').touched
+                  registerForm.get('description').hasError('minlength') &&
+                  registerForm.get('description').touched
                 "
                 class="invalid-feedback"
               >
@@ -127,8 +127,8 @@
               </div>
               <div
                 *ngIf="
-                  registerForm.get('txtDescription').hasError('maxlength') &&
-                  registerForm.get('txtDescription').touched
+                  registerForm.get('description').hasError('maxlength') &&
+                  registerForm.get('description').touched
                 "
                 class="invalid-feedback"
               >
@@ -144,10 +144,10 @@
                 class="form-control"
                 [ngClass]="{
                   'is-invalid':
-                    registerForm.get('txtEmail').errors &&
-                    registerForm.get('txtEmail').touched
+                    registerForm.get('email').errors &&
+                    registerForm.get('email').touched
                 }"
-                formControlName="txtEmail"
+                formControlName="email"
               />
               <div class="invalid-feedback">
                 Email é obrigatório!
@@ -158,36 +158,13 @@
               <input
                 type="text"
                 class="form-control"
-                formControlName="imageURL"
+                
               />
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label>Data agendamento</label>
-              <input
-                type="text"
-                formControlName="txtScheduleDate"
-                value="{{scheduleDate | DateTimeFormatPipe}}"
-                [(ngModel)] ="scheduleDate"
-                class="form-control"
-                bsDatepicker
-                [datesDisabled]="disabledDates"
-                [ngClass]="{
-                  'is-invalid':
-                    registerForm.get('txtScheduleDate').errors &&
-                    registerForm.get('txtScheduleDate').touched
-                }"               
-                
-              />
-              <div class="invalid-feedback">
-                Data é obrigatória!
-              </div>
-            </div>
-            <div class="form-group col-md-4">
-              <timepicker formControlName="txtScheduleHour"></timepicker>
-            </div>
+          <div class="form-row">           
+            
           </div>
         </form>
       </div>
@@ -206,7 +183,7 @@
     </div>
   </div>
 </div>
-
+{{registerForm.valid}}
 <div
   bsModal
   #confirm="bs-modal"

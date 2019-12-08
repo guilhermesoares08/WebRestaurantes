@@ -86,7 +86,10 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
+                
                 var resResult = _mapper.Map<Restaurant>(model);
+                resResult.CreateDate = DateTime.Now;
+                resResult.UpdateDate = DateTime.Now;
                 _repo.Add(resResult);
                 if (await _repo.SaveChangesAsync())
                 {
@@ -111,6 +114,7 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var rest = await _repo.GetRestaurantAsyncById(id);
                 if (rest == null) { return NotFound(); };
+                rest.UpdateDate = DateTime.Now;
                 _mapper.Map(model, rest);
                 _repo.Update(rest);
 

@@ -15,6 +15,7 @@ namespace WebRestaurantes.WebAPI.Dtos
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public string VendorId { get; set; }        
+        public string EnvironmentId { get; set; }        
         public List<ImageDto> Images { get; set; }
         public List<RestaurantAddressDto> Address { get; set; }
         public List<RestaurantExtensionDto> Extensions { get; set; }

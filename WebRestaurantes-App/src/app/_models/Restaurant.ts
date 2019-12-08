@@ -1,4 +1,5 @@
 import { Image } from './Image';
+import { Address } from 'cluster';
 
 export interface Restaurant {
   id: number;

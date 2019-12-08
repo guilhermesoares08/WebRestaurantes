@@ -83,16 +83,30 @@ export class RestaurantComponent implements OnInit {
     template.show();
   }
 
-  salvarAlteracao() {
+  closeModal(template: any) {
+    this.registerForm.reset();
+    template.hide();
+  }
+
+  salvarAlteracao(template: any) {
     if (this.registerForm.valid) {
       this.restaurant = Object.assign({}, this.registerForm.value);
-      this.restaurantService.postRestaurant(this.restaurant);
+      this.restaurant.environmentId = 'teste';
+      this.restaurantService.postRestaurant(this.restaurant).subscribe(
+        (responseRestaurant: Restaurant) => {
+          template.hide();
+          this.getAllRestaurants();
+          this.toastr.success('Inserido com Sucesso!');
+        }, error => {
+          this.toastr.error(`Erro ao Inserir: ${error}`);
+        }
+      );
     }
   }
 
   validation() {
     this.registerForm = this.fb.group({
-      txtDescription: [
+      description: [
         '',
         [
           Validators.required,
@@ -100,10 +114,10 @@ export class RestaurantComponent implements OnInit {
           Validators.maxLength(100)
         ]
       ],
-      txtEmail: ['', [Validators.required, Validators.email]],
-      imageURL: ['', Validators.required],
-      txtScheduleDate: ['', Validators.required],
-      txtScheduleHour: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]]
+      // imageURL: ['', Validators.required]
+      // txtScheduleDate: ['', Validators.required],
+      // txtScheduleHour: ['', Validators.required]
     });
   }
 
