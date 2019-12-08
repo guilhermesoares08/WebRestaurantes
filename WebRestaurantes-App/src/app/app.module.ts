@@ -22,6 +22,8 @@ import { fromEventPattern } from 'rxjs';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { MidbodyComponent } from './midbody/midbody.component';
+import { TituloComponent } from './_shared/titulo/titulo.component';
+
 
 @NgModule({
    declarations: [
@@ -31,7 +33,8 @@ import { MidbodyComponent } from './midbody/midbody.component';
       DateTimeFormatPipePipe,
       CarouselComponent,
       CarouselTemplateComponent,
-      MidbodyComponent
+      MidbodyComponent,
+      TituloComponent
    ],
    imports: [
       BrowserModule,
@@ -45,7 +48,11 @@ import { MidbodyComponent } from './midbody/midbody.component';
       BsDatepickerModule.forRoot(),
       TimepickerModule.forRoot(),
       BrowserAnimationsModule, // required animations module
-      ToastrModule.forRoot() // ToastrModule added
+      ToastrModule.forRoot({
+         timeOut: 10000,
+         positionClass: 'toast-bottom-right',
+         preventDuplicates: true,
+       }) // ToastrModule added
    ],
    providers: [
       RestaurantService

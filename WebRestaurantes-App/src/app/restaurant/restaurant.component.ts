@@ -18,7 +18,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RestaurantComponent implements OnInit {
   // tslint:disable-next-line: variable-name
+  title = 'Meus restaurantes';
   _filtroLista: string;
+  scheduleDate: string;
   restaurants: Restaurant[];
   filteredRestaurants: Restaurant[];
   restaurant: Restaurant;
@@ -64,7 +66,7 @@ export class RestaurantComponent implements OnInit {
         this.filteredRestaurants = this.restaurants;
       },
       error => {
-        console.log(error);
+        this.toastr.error(`Erro ao tentar carregar: ${error}`);
       }
     );
   }
