@@ -18,6 +18,7 @@ import {
 export class CarouselTemplateComponent implements OnInit {
   // tslint:disable-next-line: variable-name
   _filtroLista: string;
+  dataAtual: string;
   restaurants: Restaurant[];
   filteredRestaurants: Restaurant[];
   restaurant: Restaurant;
@@ -27,6 +28,8 @@ export class CarouselTemplateComponent implements OnInit {
     new Date('2019-12-05'),
     new Date('2019-12-09')
   ];
+  imagemLargura = 300;
+  imagemMargem = 10;
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -54,6 +57,7 @@ export class CarouselTemplateComponent implements OnInit {
   }
 
   getAllRestaurants() {
+    this.dataAtual = new Date().getMilliseconds().toString();
     this.restaurantService.getAllRestaurant().subscribe(
       // tslint:disable-next-line: variable-name
       (_restaurants: Restaurant[]) => {

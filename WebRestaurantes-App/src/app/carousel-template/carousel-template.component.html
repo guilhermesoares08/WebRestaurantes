@@ -71,18 +71,15 @@
           <div class="row" >      
             <div class="col-md-4" *ngFor="let res of filteredRestaurants">
               <div class="card mb-4 shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg"
-                    preserveAspectRatio="xMidYMid slice" 
-                    focusable="false" 
-                    role="img" 
-                    aria-label="Placeholder: ">
-                    <title>{{ res.description }}</title>
-                    
-                    <rect width="100%" height="100%" fill="#55595c"></rect>
-                    <text x="38%" y="50%" fill="#eceeef" dy=".3em">{{ res.description }}</text>
-                </svg>
+                
+                <div class="card-img-block">
+                    <img style="cursor: pointer; width: 350px; heigth:100px;" class="img-fluid" src="http://localhost:5000/resources/images/{{ res.imageURL }}?_ts={{
+                      dataAtual
+                    }}" >
+                      </div>
                 <div class="card-body">
-                  <p class="card-text">ShortDescription property</p>
+                   
+                  <p class="card-text">{{ res.description }}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <button type="button" class="btn btn-sm btn-outline-secondary" routerLink="restaurant">View</button>
@@ -101,57 +98,45 @@
 
 <div bsModal #template="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="dialog-sizes-name1">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Restaurante</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Reservar Vaga</h4>
         <button type="button" class="close pull-right" (click)="template.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <form [formGroup]='registerForm'>
-              <div class="form-row">
-                <div class="form-group col-md-12">
-                  <label>Nome</label>
-                  <input type="text" class="form-control" 
-                  [ngClass]="{'is-invalid': registerForm.get('txtDescription').errors 
-                                              && registerForm.get('txtDescription').touched}"
-                   formControlName="txtDescription">
-                  <div *ngIf="registerForm.get('txtDescription').hasError('required') && registerForm.get('txtDescription').touched"
-                   class="invalid-feedback">
-                    Nome é obrigatório!
+        
+          <form [formGroup]='registerForm'>             
+              <div class="col-md-12">
+                  <div class="form-group ">
+                      <select id="arac-turu" class="form-control" >
+                          <option selected>Horario</option>
+                          <option>18:00</option>
+                          <option>19:00</option>
+                          <option>20:00</option>                                        
+
+                      </select>
                   </div>
-                  <div *ngIf="registerForm.get('txtDescription').hasError('minlength') && registerForm.get('txtDescription').touched"
-                  class="invalid-feedback">
-                    Nome deve ter no mínimo 4 caracteres!
+              </div>
+
+              <div class="col-md-12">
+                  <div class="form-group ">
+                      <select id="arac-turu" class="form-control" >
+                          <option selected>Qtd Pessoas</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6 ou mais</option>
+
+                      </select>
                   </div>
-                  <div *ngIf="registerForm.get('txtDescription').hasError('maxlength') && registerForm.get('txtDescription').touched"
-                  class="invalid-feedback">
-                    Nome deve ter no máximo 100 caracteres!
-                  </div>
-                </div>
-              </div>  
-              <div class="form-row">
-                <div class="form-group col-md-8">
-                  <label>Email</label>
-                  <input type="text" class="form-control"
-                  [ngClass]="{'is-invalid': registerForm.get('txtEmail').errors 
-                                              && registerForm.get('txtEmail').touched}"
-                  formControlName="txtEmail">
-                  <div class="invalid-feedback">
-                      Email é obrigatório!
-                  </div>
-                </div>
-                <div class="form-group col-md-4">
-                  <label>Imagem</label>
-                  <input type="text" class="form-control" 
-                  formControlName="imageURL">
-                </div>
-              </div> 
+              </div>              
           
               <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-12">
                   <label>Data agendamento</label>
                   <input type="text" class="form-control" bsDatepicker [datesDisabled]="disabledDates"
                   [ngClass]="{'is-invalid': registerForm.get('txtScheduleDate').errors 
@@ -160,10 +145,7 @@
                   <div class="invalid-feedback">
                       Data é obrigatória!
                   </div>
-                </div> 
-                <div class="form-group col-md-4">        
-                  <timepicker formControlName="txtScheduleHour" ></timepicker>
-                </div>
+                </div>                 
               </div>
               
           </form>
