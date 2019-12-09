@@ -1,6 +1,9 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-light"  style="background-color: darkred !important">
+<nav
+  class="navbar navbar-expand-md navbar-dark bg-light"
+  style="background-color: darkred !important"
+>
   <div class="container">
-    <a class="navbar-brand"  routerLink="">WebRestaurantes</a>
+    <a class="navbar-brand" routerLink="">WebRestaurantes</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -16,40 +19,45 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link"   routerLink="restaurant"
-            >Restaurantes </a>
+          <a class="nav-link" routerLink="restaurant">Restaurantes </a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" routerLink="restaurant">Restaurantes</a>
         </li> -->
-        
       </ul>
     </div>
 
-    <ul class="navbar nav">
+    <ul *ngIf="loggedIn()" class="navbar-nav">
       <li class="nav-item dropdown" dropdown>
         <a
           dropdownToggle
-          class="nav-link dropdown-toggle"          
+          class="nav-link dropdown-toggle"
           id="navbarDropdownMenuLink"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-          style="color:white"
+          style="cursor: pointer; text-transform: capitalize;"
         >
-          Usuário
+          {{ userName() }}
         </a>
-        <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <div
+          *dropdownMenu
+          class="dropdown-menu"
+          aria-labelledby="navbarDropdownMenuLink"
+        >
           <a class="dropdown-item">
             Perfil
           </a>
-          <div class="divider">
-            <a href="#" class="dropdown-item">
-              Sair
-            </a>
-          </div>
+          <div role="separator" class="divider"></div>
+          <a class="dropdown-item" (click)="logout()" style="cursor: pointer">
+            Sair
+          </a>
         </div>
       </li>
     </ul>
+
+    <button *ngIf="!loggedIn()" class="btn btn-success" (click)="entrar()">
+      Entrar
+    </button>
   </div>
 </nav>

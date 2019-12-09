@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Restaurant } from '../_models/Restaurant';
 
@@ -8,7 +8,10 @@ import { Restaurant } from '../_models/Restaurant';
 })
 export class RestaurantService {
   baseUrl = 'http://localhost:5000/api/restaurant';
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) {
+
+  }
 
   getAllRestaurant(): Observable<Restaurant[]> {
     return this.http.get<Restaurant[]>(this.baseUrl);
@@ -35,7 +38,7 @@ export class RestaurantService {
   }
 
   postUpload(file: File, name: string) {
-    const fileToUplaod = <File>file[0];
+    const fileToUplaod = file[0] as File;
     const formData = new FormData();
     formData.append('file', fileToUplaod, name);
 

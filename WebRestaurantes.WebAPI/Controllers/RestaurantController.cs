@@ -12,6 +12,7 @@ using AutoMapper;
 using WebRestaurantes.WebAPI.Dtos;
 using System.IO;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProAgil.WebAPI.Controllers
 {
@@ -30,6 +31,7 @@ namespace ProAgil.WebAPI.Controllers
 
         // GET api/values
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             try
@@ -67,6 +69,7 @@ namespace ProAgil.WebAPI.Controllers
 
         //  api/values/5
         [HttpGet("getByText/{text}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(string text)
         {
             try
@@ -194,9 +197,7 @@ namespace ProAgil.WebAPI.Controllers
             catch (System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou {ex.Message}");
-            }
-
-            return BadRequest("Erro ao tentar realizar upload");
+            }            
         }
     }
 }

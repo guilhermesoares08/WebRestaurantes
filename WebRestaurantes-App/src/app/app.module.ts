@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { TooltipModule, ModalModule, BsDropdownModule, CarouselComponent } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +23,12 @@ import { fromEventPattern } from 'rxjs';
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { MidbodyComponent } from './midbody/midbody.component';
 import { TituloComponent } from './_shared/titulo/titulo.component';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 
 
 @NgModule({
@@ -34,7 +40,10 @@ import { TituloComponent } from './_shared/titulo/titulo.component';
       CarouselComponent,
       CarouselTemplateComponent,
       MidbodyComponent,
-      TituloComponent
+      TituloComponent,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
    ],
    imports: [
       BrowserModule,
@@ -47,7 +56,7 @@ import { TituloComponent } from './_shared/titulo/titulo.component';
       ReactiveFormsModule,
       BsDatepickerModule.forRoot(),
       TimepickerModule.forRoot(),
-      BrowserAnimationsModule, // required animations module
+      BrowserAnimationsModule,
       ToastrModule.forRoot({
          timeOut: 10000,
          positionClass: 'toast-bottom-right',
@@ -55,7 +64,12 @@ import { TituloComponent } from './_shared/titulo/titulo.component';
        }) // ToastrModule added
    ],
    providers: [
-      RestaurantService
+      RestaurantService,
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: AuthInterceptor,
+         multi: true
+      }
    ],
    bootstrap: [
       AppComponent
