@@ -16,7 +16,7 @@ namespace WebRestaurantes.WebAPI.Helpers
                 // });
             CreateMap<RestaurantAddress, RestaurantAddressDto>().ReverseMap();
             CreateMap<RestaurantExtension, RestaurantExtensionDto>().ReverseMap();
-            CreateMap<Domain.Domain, DomainDto>().ReverseMap();
+            // CreateMap<Domain.Domain, DomainDto>().ReverseMap();
             CreateMap<DomainValue, DomainValueDto>().ReverseMap();         
             CreateMap<Image, ImageDto>().ReverseMap();
             CreateMap<Table, TableDto>().ReverseMap();

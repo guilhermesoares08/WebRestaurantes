@@ -17,6 +17,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using AutoMapper;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace WebRestaurantes.WebAPI
 {
@@ -41,6 +45,10 @@ namespace WebRestaurantes.WebAPI
             services.AddControllers();
             services.AddCors();
             services.AddAutoMapper();
+            // services.Configure<FormOptions>(options =>
+            // {
+            //     options.MemoryBufferThreshold = Int32.MaxValue;
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +65,10 @@ namespace WebRestaurantes.WebAPI
 
             app.UseAuthorization();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions(){
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseEndpoints(endpoints =>
             {

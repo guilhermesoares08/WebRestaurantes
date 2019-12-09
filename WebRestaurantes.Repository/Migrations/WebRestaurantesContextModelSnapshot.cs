@@ -115,6 +115,9 @@ namespace WebRestaurantes.Repository.Migrations
                     b.Property<string>("EnvironmentId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("OwnerId")
                         .HasColumnType("INTEGER");
 

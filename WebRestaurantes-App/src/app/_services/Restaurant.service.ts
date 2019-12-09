@@ -33,4 +33,12 @@ export class RestaurantService {
   deleteRestaurant(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  postUpload(file: File, name: string) {
+    const fileToUplaod = <File>file[0];
+    const formData = new FormData();
+    formData.append('file', fileToUplaod, name);
+
+    return this.http.post(`${this.baseUrl}/upload`, formData);
+  }
 }

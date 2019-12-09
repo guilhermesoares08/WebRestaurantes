@@ -12,6 +12,7 @@ import {
 import { Constants } from '../util/Constants';
 import { ToastrService } from 'ngx-toastr';
 import { utils } from 'protractor';
+import { Image } from '../_models/Image';
 
 @Component({
   selector: 'app-restaurant',
@@ -23,9 +24,11 @@ export class RestaurantComponent implements OnInit {
   title = 'Meus restaurantes';
   modoSalvar: string;
   _filtroLista: string;
-  scheduleDate: string;
+
   restaurants: Restaurant[];
   restaurantAddress: any = [];
+  imagesToSave: Image[] = [];
+  tmpImageToSave: Image = { id: null, url: '', extension: '' };
   filteredRestaurants: Restaurant[];
   restaurant: Restaurant;
   modalRef: BsModalRef;
@@ -35,6 +38,13 @@ export class RestaurantComponent implements OnInit {
     new Date('2019-12-09')
   ];
   bodyDeletarRestaurant = '';
+  file: File;
+  fileNameToUpdate: string;
+  dataAtual: string;
+
+  imagemLargura = 50;
+  imagemMargem = 2;
+  mostrarImagem = false;
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -63,6 +73,7 @@ export class RestaurantComponent implements OnInit {
   }
 
   getAllRestaurants() {
+    this.dataAtual = new Date().getMilliseconds().toString();
     this.restaurantService.getAllRestaurant().subscribe(
       // tslint:disable-next-line: variable-name
       (_restaurants: Restaurant[]) => {
@@ -103,10 +114,16 @@ export class RestaurantComponent implements OnInit {
     this.openModal(template);
   }
 
+  alternarImagem() {
+    this.mostrarImagem = !this.mostrarImagem;
+  }
+
   editarRestaurante(restaurante: Restaurant, template: any) {
     this.modoSalvar = 'put';
     this.openModal(template);
     this.restaurant = Object.assign({}, restaurante);
+    this.fileNameToUpdate = restaurante.imageURL.toString();
+    this.restaurant.imageURL = '';
     this.registerForm.patchValue(this.restaurant);
   }
 
@@ -116,8 +133,15 @@ export class RestaurantComponent implements OnInit {
       if (this.modoSalvar === Constants.HTTPMETHOD_POST) {
         this.restaurant = Object.assign({}, this.registerForm.value);
         this.restaurant.environmentId = 'teste';
-        this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
+        // this.restaurant.images.push({ url: imagesToSave.url, extension: imagesToSave.extension });
+        this.restaurantAddress.push({ address: this.registerForm.value.addressDescription, cityId: 1100015 });
         this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
+        // this.tmpImageToSave.url = this.file[0].name;
+        if (this.restaurant.imageURL != null && this.restaurant.imageURL.length > 0) {
+          this.uploadImagem();
+        }
+        // this.imagesToSave.push(this.tmpImageToSave);
+        // this.restaurant.images = Object.assign({}, this.imagesToSave);
         // this.restaurant.addresses.push(this.restaurantAddress);
         this.restaurantService.postRestaurant(this.restaurant).subscribe(
           (responseRestaurant: Restaurant) => {
@@ -135,6 +159,11 @@ export class RestaurantComponent implements OnInit {
           this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
           this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         }
+        if (this.restaurant.imageURL != null && this.restaurant.imageURL.length > 0) {
+          this.uploadImagem();
+        }
+        // this.imagesToSave.push(this.tmpImageToSave);
+        // this.restaurant.images = Object.assign({}, this.imagesToSave);
         this.restaurantService.putRestaurant(this.restaurant).subscribe(
           (responseRestaurant: Restaurant) => {
             template.hide();
@@ -159,8 +188,17 @@ export class RestaurantComponent implements OnInit {
           Validators.maxLength(100)
         ]
       ],
-      email: ['', [Validators.required, Validators.email]]
-      // imageURL: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      addressDescription: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(100)
+        ]
+      ],
+      cityId: [''],
+      imageURL: ['']
       // txtScheduleDate: ['', Validators.required],
       // txtScheduleHour: ['', Validators.required]
     });
@@ -183,5 +221,68 @@ export class RestaurantComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  onFileChange(event) {
+    const reader = new FileReader();
+
+    if (event.target.files && event.target.files.length) {
+      this.file = event.target.files;
+      console.log(this.file);
+    }
+  }
+
+  // uploadImagem() {
+
+  //   if (this.restaurant.images != null) {
+  //     // for (let index = 0; index < this.restaurant.images.length; index++) {
+  //     if (this.modoSalvar === 'post') {
+
+  //       const nomeArquivo = this.file.name.split('\\', 3);
+  //       this.restaurant.images[0].url = nomeArquivo[2];
+
+  //       this.restaurantService.postUpload(this.file, nomeArquivo[2])
+  //         .subscribe(
+  //           () => {
+  //             // this.dataAtual = new Date().getMilliseconds().toString();
+  //             this.getAllRestaurants();
+  //           }
+  //         );
+  //     } else {
+  //       this.restaurant.images[0].url = this.fileNameToUpdate;
+  //       this.restaurantService.postUpload(this.file, this.fileNameToUpdate)
+  //         .subscribe(
+  //           () => {
+  //             // this.dataAtual = new Date().getMilliseconds().toString();
+  //             this.getAllRestaurants();
+  //           }
+  //         );
+  //     }
+  //     // }
+  //   }
+  // }
+
+  uploadImagem() {
+    if (this.modoSalvar === 'post') {
+      const nomeArquivo = this.restaurant.imageURL.split('\\', 3);
+      this.restaurant.imageURL = nomeArquivo[2];
+
+      this.restaurantService.postUpload(this.file, nomeArquivo[2])
+        .subscribe(
+          () => {
+            this.dataAtual = new Date().getMilliseconds().toString();
+            this.getAllRestaurants();
+          }
+        );
+    } else {
+      this.restaurant.imageURL = this.fileNameToUpdate;
+      this.restaurantService.postUpload(this.file, this.fileNameToUpdate)
+        .subscribe(
+          () => {
+            this.dataAtual = new Date().getMilliseconds().toString();
+            this.getAllRestaurants();
+          }
+        );
+    }
   }
 }

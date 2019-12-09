@@ -11,5 +11,6 @@ export class Restaurant {
   vendorId: string;
   environmentId: string;
   images: Image[];
+  imageURL: string;
   addresses: RestaurantAddress[];
 }
