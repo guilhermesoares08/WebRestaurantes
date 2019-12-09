@@ -137,9 +137,9 @@ export class RestaurantComponent implements OnInit {
         this.restaurantAddress.push({ address: this.registerForm.value.addressDescription, cityId: 1100015 });
         this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         // this.tmpImageToSave.url = this.file[0].name;
-        if (this.restaurant.imageURL != null && this.restaurant.imageURL.length > 0) {
+        
           this.uploadImagem();
-        }
+        
         // this.imagesToSave.push(this.tmpImageToSave);
         // this.restaurant.images = Object.assign({}, this.imagesToSave);
         // this.restaurant.addresses.push(this.restaurantAddress);
@@ -159,9 +159,9 @@ export class RestaurantComponent implements OnInit {
           this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
           this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         }
-        if (this.restaurant.imageURL != null && this.restaurant.imageURL.length > 0) {
+        
           this.uploadImagem();
-        }
+        
         // this.imagesToSave.push(this.tmpImageToSave);
         // this.restaurant.images = Object.assign({}, this.imagesToSave);
         this.restaurantService.putRestaurant(this.restaurant).subscribe(
