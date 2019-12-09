@@ -1,10 +1,15 @@
 using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Domain;
+using WebRestaurantes.Domain.Identity;
 
 namespace WebRestaurantes.Repository.DataContext
 {
-    public class WebRestaurantesContext : DbContext
+    public class WebRestaurantesContext : IdentityDbContext<Domain.Identity.User, Role, int,
+                                                    IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
+                                                    IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public WebRestaurantesContext(DbContextOptions<WebRestaurantesContext> options) : base(options) { }
 
@@ -25,6 +30,24 @@ namespace WebRestaurantes.Repository.DataContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserRole>(userRole => 
+                {
+                    userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
+
+                    userRole.HasOne(ur => ur.Role)
+                        .WithMany(r => r.UserRoles)
+                        .HasForeignKey(ur => ur.RoleId)
+                        .IsRequired();
+                    
+                    userRole.HasOne(ur => ur.User)
+                        .WithMany(r => r.UserRoles)
+                        .HasForeignKey(ur => ur.UserId)
+                        .IsRequired();
+                }
+            );
+            
             modelBuilder.Entity<RestaurantExtension>()
             .HasOne(s => s.DomainValue)
             .WithMany()

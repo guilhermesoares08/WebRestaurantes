@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using WebRestaurantes.Domain;
+using WebRestaurantes.Domain.Identity;
 using WebRestaurantes.WebAPI.Dtos;
 
 namespace WebRestaurantes.WebAPI.Helpers
@@ -20,6 +21,8 @@ namespace WebRestaurantes.WebAPI.Helpers
             CreateMap<DomainValue, DomainValueDto>().ReverseMap();         
             CreateMap<Image, ImageDto>().ReverseMap();
             CreateMap<Table, TableDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
         }
     }
 }

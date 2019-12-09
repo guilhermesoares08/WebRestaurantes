@@ -21,6 +21,13 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
+using WebRestaurantes.Domain.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace WebRestaurantes.WebAPI
 {
@@ -37,18 +44,52 @@ namespace WebRestaurantes.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<WebRestaurantesContext>(x => x.UseSqlite(Configuration.GetConnectionString("ProfileConnectionString")));
-            services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();        
+            services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
 
-            services.AddMvc(option => option.EnableEndpointRouting = false)
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddCors();
             services.AddAutoMapper();
-            // services.Configure<FormOptions>(options =>
-            // {
-            //     options.MemoryBufferThreshold = Int32.MaxValue;
-            // });
+            IdentityBuilder builder = services.AddIdentityCore<Domain.Identity.User>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+            });
+            // cria o builder para ser do tipo associacao role
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            // dizer qual context que está a autenticacao
+            builder.AddEntityFrameworkStores<WebRestaurantesContext>();
+            builder.AddRoleValidator<RoleValidator<Role>>();
+            // quem vai ser o gerenciador dos papeis
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<User>>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // validacao do emissor da chave (propria api)
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                                .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                        };
+                    }
+                );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,8 +105,10 @@ namespace WebRestaurantes.WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions(){
+            app.UseStaticFiles(new StaticFileOptions()
+            {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
                 RequestPath = new PathString("/Resources")
             });
