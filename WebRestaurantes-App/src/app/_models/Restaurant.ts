@@ -12,5 +12,6 @@ export class Restaurant {
   environmentId: string;
   images: Image[];
   imageURL: string;
+  phone: string;
   addresses: RestaurantAddress[];
 }
