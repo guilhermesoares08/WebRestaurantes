@@ -2,10 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { TooltipModule, ModalModule, BsDropdownModule, CarouselComponent } from 'ngx-bootstrap';
+import { TooltipModule, ModalModule, BsDropdownModule, CarouselModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { TabsModule } from 'ngx-bootstrap';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { defineLocale, BsLocaleService, ptBrLocale, BsDatepickerModule } from 'ngx-bootstrap';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
@@ -28,6 +30,7 @@ import { LoginComponent } from './user/login/login.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { RestaurantDetailComponent } from './restaurant/restaurantDetail/restaurantDetail.component';
 
 
 
@@ -37,13 +40,13 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       RestaurantComponent,
       NavComponent,
       DateTimeFormatPipePipe,
-      CarouselComponent,
       CarouselTemplateComponent,
       MidbodyComponent,
       TituloComponent,
       UserComponent,
       LoginComponent,
-      RegistrationComponent
+      RegistrationComponent,
+      RestaurantDetailComponent
    ],
    imports: [
       BrowserModule,
@@ -61,7 +64,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
          timeOut: 10000,
          positionClass: 'toast-bottom-right',
          preventDuplicates: true,
-       }) // ToastrModule added
+       }),
+       TabsModule.forRoot(),
+       NgxMaskModule.forRoot(),
+       CarouselModule.forRoot()
    ],
    providers: [
       RestaurantService,

@@ -50,6 +50,7 @@ namespace ProAgil.WebAPI.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             try

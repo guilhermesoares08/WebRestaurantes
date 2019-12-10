@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="restaurant">Restaurantes </a>
+          <a class="nav-link" routerLink="restaurants">Restaurantes </a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" routerLink="restaurant">Restaurantes</a>
@@ -56,7 +56,7 @@
       </li>
     </ul>
 
-    <button *ngIf="!loggedIn()" class="btn btn-success" (click)="entrar()">
+    <button *ngIf="!loggedIn()" class="btn btn-light" (click)="entrar()">
       Entrar
     </button>
   </div>
