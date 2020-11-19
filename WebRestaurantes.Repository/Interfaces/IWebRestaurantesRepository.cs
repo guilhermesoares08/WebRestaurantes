@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using WebRestaurantes.Domain;
 using System.Collections.Generic;
+using System;
 
 namespace WebRestaurantes.Repository.Interfaces
 {
@@ -21,5 +22,8 @@ namespace WebRestaurantes.Repository.Interfaces
         Task <Restaurant> GetRestaurantAsyncById(int id, bool includeImages = false);
 
         Task<List<Restaurant>> GetRestaurantAsyncByText(string text);
+
+        Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId, DateTime scheduleDate);
+        Task<List<string>> GetScheduleTimesByRestaurant(int restaurantId, DateTime scheduleDate);
     }
 }

@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group ">
-                                    <select id="ilceler" class="form-control" >
+                                    <select  id="ilceler" class="form-control" >
                                         <option selected>Número de pessoas</option>
                                         <option>1</option>
                                         <option>2</option>                                        
@@ -38,10 +38,7 @@
                             <div class="col-md-4">
                                 <div class="form-group ">
                                     <select id="arac-turu" class="form-control" >
-                                        <option selected>Horario</option>
-                                        <option>18:00</option>
-                                        <option>19:00</option>
-                                        <option>20:00</option>                                        
+                                        <option selected>Horario</option>                                                                          
 
                                     </select>
                                 </div>
@@ -92,7 +89,7 @@
                         <a [routerLink]="['/restaurant', res.id, 'detail']" tooltip="detalhe" class="btn btn-sm btn-outline-secondary">
                         Detalhe
                         </a>                      
-                      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="template.show()" >Reservar Vaga</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="openModal(res.id)" >Reservar Vaga</button>
                     </div>
                     <small class="text-muted">9 mins</small>
                   </div>
@@ -105,13 +102,13 @@
       </div>
 </section>
 
-<div bsModal #template="bs-modal" class="modal fade" tabindex="-1"
+<div bsModal #template="bs-modal"  class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="dialog-sizes-name1">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <h4 id="dialog-sizes-name1" class="modal-title pull-left">Reservar Vaga</h4>
-        <button type="button" class="close pull-right" (click)="template.hide()" aria-label="Close">
+        <button type="button" class="close pull-right"  (click)="template.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

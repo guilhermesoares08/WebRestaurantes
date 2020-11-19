@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Domain;
 using WebRestaurantes.Repository.DataContext;
 using System.Text.Json.Serialization;
+using System;
 
 namespace WebRestaurantes.Repository
 {
@@ -81,8 +82,24 @@ namespace WebRestaurantes.Repository
                 query = query.AsNoTracking().Where(r => r.Description.ToLower().Contains(text));
 
             }
+            //sem AsNoTracking = pode manipular
             query = query.AsNoTracking();
             return await query.ToListAsync();
+        }
+
+        public async Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId, DateTime scheduleDate)
+        {            
+            IQueryable<Scheduling> query = _webRestaurantesContext.Scheduling;
+            query = query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId);         
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<string>> GetScheduleTimesByRestaurant(int restaurantId, DateTime scheduleDate)
+        {            
+            IQueryable<Scheduling> query = _webRestaurantesContext.Scheduling;
+            //query = query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId);        
+            var q = await query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId).Select(i => i.ScheduleDate.Value.ToString("hh:mm:ss")).ToListAsync();
+            return q;
         }
     }
 }

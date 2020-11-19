@@ -28,6 +28,8 @@ namespace WebRestaurantes.Repository.DataContext
 
         public DbSet<State> State { get; set; }
 
+        public DbSet<Scheduling> Scheduling { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

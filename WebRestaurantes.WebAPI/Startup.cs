@@ -44,6 +44,7 @@ namespace WebRestaurantes.WebAPI
         {
             services.AddDbContext<WebRestaurantesContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ProfileConnectionString")));
             services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
+            //services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
 
             services.AddMvc(options =>
             {

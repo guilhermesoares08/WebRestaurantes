@@ -8,6 +8,7 @@ import {
   Validators,
   FormBuilder
 } from '@angular/forms';
+import { SchedulingService } from '../_services/Scheduling.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class CarouselTemplateComponent implements OnInit {
   ];
   imagemLargura = 300;
   imagemMargem = 10;
+  horariosLivres: string[];
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -46,7 +48,8 @@ export class CarouselTemplateComponent implements OnInit {
     private restaurantService: RestaurantService,
     private modalService: BsModalService,
     private fb: FormBuilder,
-    private localeService: BsLocaleService
+    private localeService: BsLocaleService,
+    private schedulingService: SchedulingService
   ) {
     this.localeService.use('pt-br');
   }
@@ -54,6 +57,8 @@ export class CarouselTemplateComponent implements OnInit {
   ngOnInit() {
     this.getAllRestaurants();
     this.validation();
+    this.schedulingService.getTimes(1, new Date(2020, 11, 18, 0, 0, 0, 0)).subscribe(p => this.horariosLivres = p);
+    console.log(this.horariosLivres);
   }
 
   getAllRestaurants() {
@@ -77,7 +82,8 @@ export class CarouselTemplateComponent implements OnInit {
     );
   }
 
-  openModal(template: any) {
+  openModal(template: any, restaurantId: number) {
+    console.log(restaurantId + 'click');
     template.show();
   }
 

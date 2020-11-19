@@ -105,7 +105,7 @@ export class RestaurantComponent implements OnInit {
   criaEndereco(endereco: any): FormGroup {
     return this.fb.group({
       address: [endereco.address],
-      cityId: [endereco.url]
+      cityId: [endereco.cityId]
     });
   }
 
