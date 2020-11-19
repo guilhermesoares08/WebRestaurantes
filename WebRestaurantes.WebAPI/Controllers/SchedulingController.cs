@@ -45,42 +45,42 @@ namespace WebRestaurantes.WebAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
         }
-        ////usar post para passar o datetime como body
-        //[HttpGet("{restaurantId}/times")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> GetScheduleTime(int restaurantId, ScheduleDate scheduleDate)
-        //{
-        //    try
-        //    {                
-        //        var results = await _repo.GetScheduleTimesByRestaurant(restaurantId, scheduleDate.SDate);
-        //        return Ok(results);
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        string innerEx = "";//ex.InnerException.Message;
-        //        string exMessage = ex.Message;
-        //        return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
-        //    }
-        //}
-
-
-        // POST api/values
-        [HttpPost("{restaurantId}/times")]
+        //usar post para passar o datetime como body
+        [HttpGet("{restaurantId}/times")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetScheduleTime(int restaurantId, ScheduleDate scheduleDate)
         {
             try
-            {               
+            {
                 var results = await _repo.GetScheduleTimesByRestaurant(restaurantId, scheduleDate.SDate);
                 return Ok(results);
             }
             catch (System.Exception ex)
             {
-                string innerEx = ex.InnerException.Message;
+                string innerEx = "";//ex.InnerException.Message;
                 string exMessage = ex.Message;
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
             }
-
-            return BadRequest();
         }
+
+
+        //// POST api/values
+        //[HttpPost("{restaurantId}/times")]
+        //public async Task<IActionResult> GetScheduleTime(int restaurantId, ScheduleDate scheduleDate)
+        //{
+        //    try
+        //    {               
+        //        var results = await _repo.GetScheduleTimesByRestaurant(restaurantId, scheduleDate.SDate);
+        //        return Ok(results);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        string innerEx = ex.InnerException.Message;
+        //        string exMessage = ex.Message;
+        //        return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco Dados Falhou{exMessage + "|" + innerEx}");
+        //    }
+
+        //    return BadRequest();
+        //}
     }
 }
