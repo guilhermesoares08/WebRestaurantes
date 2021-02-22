@@ -57,8 +57,8 @@ export class CarouselTemplateComponent implements OnInit {
   ngOnInit() {
     this.getAllRestaurants();
     this.validation();
-    this.schedulingService.getTimes(1, new Date(2020, 11, 18, 0, 0, 0, 0)).subscribe(p => this.horariosLivres = p);
-    console.log(this.horariosLivres);
+    //this.schedulingService.getTimes(1, new Date(2020, 11, 18, 0, 0, 0, 0)).subscribe(p => this.horariosLivres = p);
+    //console.log(this.horariosLivres);
   }
 
   getAllRestaurants() {

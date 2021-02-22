@@ -53,7 +53,8 @@
       <td>{{ res.id }}</td>
       <td>{{ res.description }}</td>
       <td>{{ res.email | uppercase }}</td>
-      <td>{{ res.createDate | DateTimeFormatPipe }}</td>
+      <td>{{ res.createDate | date: 'dd/MM/yyyy' }}</td>
+      
       <td>
         <div class="btn-group">
           <button
