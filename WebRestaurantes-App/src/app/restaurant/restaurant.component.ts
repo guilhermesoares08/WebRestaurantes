@@ -134,13 +134,16 @@ export class RestaurantComponent implements OnInit {
     if (this.registerForm.valid) {
       if (this.modoSalvar === Constants.HTTPMETHOD_POST) {
         this.restaurant = Object.assign({}, this.registerForm.value);
+        this.uploadImagem();
+
+        
         this.restaurant.environmentId = 'teste';
         // this.restaurant.images.push({ url: imagesToSave.url, extension: imagesToSave.extension });
         this.restaurantAddress.push({ address: this.registerForm.value.addressDescription, cityId: 1100015 });
         this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         // this.tmpImageToSave.url = this.file[0].name;
         
-          this.uploadImagem();
+        
         
         // this.imagesToSave.push(this.tmpImageToSave);
         // this.restaurant.images = Object.assign({}, this.imagesToSave);
@@ -229,40 +232,10 @@ export class RestaurantComponent implements OnInit {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
-      this.file = event.target.files;
-      console.log(this.file);
+      this.file = event.target.files;      
     }
   }
-
-  // uploadImagem() {
-
-  //   if (this.restaurant.images != null) {
-  //     // for (let index = 0; index < this.restaurant.images.length; index++) {
-  //     if (this.modoSalvar === 'post') {
-
-  //       const nomeArquivo = this.file.name.split('\\', 3);
-  //       this.restaurant.images[0].url = nomeArquivo[2];
-
-  //       this.restaurantService.postUpload(this.file, nomeArquivo[2])
-  //         .subscribe(
-  //           () => {
-  //             // this.dataAtual = new Date().getMilliseconds().toString();
-  //             this.getAllRestaurants();
-  //           }
-  //         );
-  //     } else {
-  //       this.restaurant.images[0].url = this.fileNameToUpdate;
-  //       this.restaurantService.postUpload(this.file, this.fileNameToUpdate)
-  //         .subscribe(
-  //           () => {
-  //             // this.dataAtual = new Date().getMilliseconds().toString();
-  //             this.getAllRestaurants();
-  //           }
-  //         );
-  //     }
-  //     // }
-  //   }
-  // }
+  
 
   uploadImagem() {
     if (this.modoSalvar === 'post') {
