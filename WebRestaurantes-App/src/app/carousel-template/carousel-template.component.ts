@@ -1,7 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { RestaurantService } from '../_services/Restaurant.service';
 import { Restaurant } from '../_models/Restaurant';
-import { BsModalRef, BsModalService, BsLocaleService } from 'ngx-bootstrap';
+import {  BsModalService, BsLocaleService } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal'
 import {
   FormGroup,
   FormControl,

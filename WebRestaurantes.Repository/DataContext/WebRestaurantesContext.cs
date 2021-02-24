@@ -30,31 +30,40 @@ namespace WebRestaurantes.Repository.DataContext
 
         public DbSet<Scheduling> Scheduling { get; set; }
 
+        public DbSet<SchedulingOrder> Times { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UserRole>(userRole => 
+            modelBuilder.Entity<UserRole>(userRole =>
                 {
-                    userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
+                    userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
 
                     userRole.HasOne(ur => ur.Role)
                         .WithMany(r => r.UserRoles)
                         .HasForeignKey(ur => ur.RoleId)
                         .IsRequired();
-                    
+
                     userRole.HasOne(ur => ur.User)
                         .WithMany(r => r.UserRoles)
                         .HasForeignKey(ur => ur.UserId)
                         .IsRequired();
                 }
             );
-            
+
             modelBuilder.Entity<RestaurantExtension>()
             .HasOne(s => s.DomainValue)
             .WithMany()
-            .HasForeignKey(e => e.DomainValueId)            
+            .HasForeignKey(e => e.DomainValueId)
             .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder
+            .Entity<SchedulingOrder>(
+               eb =>
+               {
+                   eb.HasNoKey();
+               });
         }
     }
 }

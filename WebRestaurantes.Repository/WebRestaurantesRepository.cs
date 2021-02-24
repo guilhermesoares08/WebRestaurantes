@@ -87,19 +87,12 @@ namespace WebRestaurantes.Repository
             return await query.ToListAsync();
         }
 
-        public async Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId, DateTime scheduleDate)
-        {            
-            IQueryable<Scheduling> query = _webRestaurantesContext.Scheduling;
-            query = query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId);         
-            return await query.ToListAsync();
-        }
-
-        public async Task<List<string>> GetScheduleTimesByRestaurant(int restaurantId, DateTime scheduleDate)
-        {            
-            IQueryable<Scheduling> query = _webRestaurantesContext.Scheduling;
-            //query = query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId);        
-            var q = await query.Where(r => r.ScheduleDate >= scheduleDate && r.RestaurantId == restaurantId).Select(i => i.ScheduleDate.Value.ToString("hh:mm:ss")).ToListAsync();
-            return q;
+        public async Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId)
+        {
+            var _query = _webRestaurantesContext.Scheduling.AsQueryable();
+            _query = _webRestaurantesContext.Scheduling.FromSqlInterpolated($@"sp_Select_Scheduling {restaurantId}");
+            var lstResult = await _query.ToListAsync();
+            return lstResult;
         }
     }
 }

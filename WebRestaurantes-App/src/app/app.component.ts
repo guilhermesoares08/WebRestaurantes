@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BsDatepickerConfig, BsDatepickerInlineConfig } from 'ngx-bootstrap/datepicker';
+
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,5 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'WebRestaurantes';
+  title = 'WebRestaurantes';  
 }

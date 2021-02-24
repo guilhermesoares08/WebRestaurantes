@@ -14,9 +14,8 @@ export class SchedulingService {
 
   }
 
-  getTimes(restaurantId: number, scheduleDate: Date): Observable<string[]> {
-    //const tmpParams = new HttpParams().set('SDate', scheduleDate.toDateString() );
-    const tmpParams = JSON.stringify(scheduleDate);
-    return this.http.get<string[]>(`${this.baseUrl}/${restaurantId}&scheduleDate=${tmpParams}/times`);
-  }
+  getScheduleByRestaurant(restaurantId: number)
+  {        
+    return this.http.get<string[]>(`${this.baseUrl}/${restaurantId}`);
+  }  
 }

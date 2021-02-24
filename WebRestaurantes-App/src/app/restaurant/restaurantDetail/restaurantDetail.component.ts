@@ -5,6 +5,9 @@ import { BsLocaleService } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { BsDatepickerConfig, BsDatepickerInlineConfig } from 'ngx-bootstrap/datepicker';
+
+
 
 @Component({
   selector: 'app-restaurantdetail',
@@ -12,48 +15,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./restaurantDetail.component.css']
 })
 export class RestaurantDetailComponent implements OnInit {
-  titulo: 'titulo';
-  createDate: any;
-  restaurant: Restaurant;
-  registerForm: FormGroup;
-  dataAtual: string;
+ 
+  bsInlineValue = new Date();
+  
+  datepickerConfig:Partial<BsDatepickerConfig>;
+  
   constructor(private restaurantService: RestaurantService
-    , private fb: FormBuilder
-    , private localeService: BsLocaleService
+    , private fb: FormBuilder   
     , private toastr: ToastrService
-    , private router: ActivatedRoute) { }
+    , private localService: BsLocaleService
+    , private router: ActivatedRoute) {
+      this.localService.use('pt-br');
+      this.datepickerConfig = Object.assign({}, { dateInputFormat:'DD/MM/YYYY hh:mm a' });
+     }
 
   ngOnInit() {
-    this.validation();
-    this.dataAtual = new Date().getMilliseconds().toString();
-  }
-
-  validation() {
-    this.registerForm = this.fb.group({
-      description: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(100)
-        ]
-      ],
-      email: ['', [Validators.required, Validators.email]],
-      addressDescription: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(100)
-        ]
-      ],
-      cityId: [''],
-      imageURL: ['']
-      // txtScheduleDate: ['', Validators.required],
-      // txtScheduleHour: ['', Validators.required]
-    });
-  }
-
-  
+   
+    
+  } 
 
 }

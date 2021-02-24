@@ -23,7 +23,6 @@ namespace WebRestaurantes.Repository.Interfaces
 
         Task<List<Restaurant>> GetRestaurantAsyncByText(string text);
 
-        Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId, DateTime scheduleDate);
-        Task<List<string>> GetScheduleTimesByRestaurant(int restaurantId, DateTime scheduleDate);
+        Task<List<Scheduling>> GetScheduleByRestaurant(int restaurantId);
     }
 }

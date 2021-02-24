@@ -21,7 +21,7 @@
                                     <input placeholder="Data da reserva" type="text" class="form-control " bsDatepicker>                                  
                                   
                                 </div>
-                            </div>
+                            </div>                         
                             <div class="col-md-4">
                                 <div class="form-group ">
                                     <select  id="ilceler" class="form-control" >
@@ -70,7 +70,7 @@
               <div class="card mb-4 shadow-sm"> 
                 
                 <div class="card-img-block" style="height: 235px;">                   
-                  <img style="cursor: pointer; width:100%; height: 100%;" class="img-fluid" src="http://localhost:5000/resources/images/{{ res.imageURL }}?_ts={{
+                  <img [routerLink]="['/restaurant', res.id, 'detail']" style="cursor: pointer; width:100%; height: 100%;" class="img-fluid" src="http://localhost:5000/resources/images/{{ res.imageURL }}?_ts={{
                     dataAtual
                   }}" >
                     <!-- <carousel>
