@@ -31,6 +31,11 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { RestaurantDetailComponent } from './restaurant/restaurantDetail/restaurantDetail.component';
+import { SharedModule } from './_shared/shared.module';
+import { FormDebugComponent } from './_shared/form-debug/form-debug.component';
+import { CampoControlErroComponent } from './_shared/campo-control-erro/campo-control-erro.component';
+import { ErrorMsgComponent } from './_shared/error-msg/error-msg.component';
+import { InputFieldComponent } from './_shared/input-field/input-field.component';
 
 
 
@@ -46,7 +51,11 @@ import { RestaurantDetailComponent } from './restaurant/restaurantDetail/restaur
       UserComponent,
       LoginComponent,
       RegistrationComponent,
-      RestaurantDetailComponent
+      RestaurantDetailComponent,
+      FormDebugComponent,
+      CampoControlErroComponent,
+      ErrorMsgComponent,
+      InputFieldComponent         
    ],
    imports: [
       BrowserModule,
@@ -65,9 +74,10 @@ import { RestaurantDetailComponent } from './restaurant/restaurantDetail/restaur
          positionClass: 'toast-bottom-right',
          preventDuplicates: true,
        }),
-       TabsModule.forRoot(),
-       NgxMaskModule.forRoot(),
-       CarouselModule.forRoot()
+      TabsModule.forRoot(),
+      NgxMaskModule.forRoot(),
+      CarouselModule.forRoot()
+       
    ],
    providers: [
       RestaurantService,

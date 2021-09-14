@@ -38,14 +38,48 @@
       </div>
     </div>
   </div>
-  <form [formGroup]="registerScheduleForm">
-    
+
+
+  <form [formGroup]="registerScheduleForm">    
     <div class="form-row">
       <div class=" col-md-12">
-        <label>Data agendamento</label>
-        <input formControlName="scheduleDate" bsDatepicker [bsValue]="bsInlineValue"/>
-        <pre *ngIf="registerScheduleForm.value.scheduleDate" class="code-preview">{{registerScheduleForm.value.scheduleDate | DateTimeFormatPipe}}</pre>
-      </div>                 
+        <label>Data da reserva</label>        
+        <input formControlName="scheduleDate" bsDatepicker dropdownToggle dropdown  (onHidden)="mostraMesas()" autofocus />       
+        <!-- <pre class="code-preview" *ngIf="registerScheduleForm.value.scheduleDate" class="code-preview">{{registerScheduleForm.value.scheduleDate | DateTimeFormatPipe}}</pre> -->        
+        <!-- <div class="col-xs-12 col-12">
+          <pre class="card card-block card-header" *ngFor="let message of messages">{{message}}</pre>
+        </div> -->
+      </div>                       
     </div>
+    <div class="form-row">
+      <div class="col-md-12">
+        <div class="form-group ">
+        <label>Mesas</label>        
+          <div class="btn-group" dropdown [isDisabled]="disabledDropTable">
+            <button id="button-disabled-menu" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+                    aria-controls="dropdown-disabled-menu">
+              Button dropdown <span class="caret"></span>
+            </button>
+            <ul id="dropdown" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-menu">              
+              <li role="menuitem" *ngFor="let t of tables"><a class="dropdown-item" >{{t.description}}</a></li>
+            </ul>
+          </div>  
+        </div>     
+      </div>                       
+    </div>
+    <div class="form-row">
+      <div class="col-md-12">
+        <div class="form-group ">
+          <label>Qtd pessoas</label>                  
+            <select  id="arac-turu" disabled="{{disabledDropTable.toString()}}" >                
+                <option role="menuitem" *ngFor="let t of tables"><a class="dropdown-item" >{{t.description}}</a></option>
+            </select>
+        </div>
+      </div> 
+    </div>
+    <app-form-debug [form]="registerScheduleForm" ngDefaultControl></app-form-debug>
+    
   </form>
+  
 </div>

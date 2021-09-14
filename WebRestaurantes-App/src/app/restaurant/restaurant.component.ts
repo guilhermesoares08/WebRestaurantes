@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { RestaurantService } from '../_services/Restaurant.service';
 import { Restaurant } from '../_models/Restaurant';
 import { RestaurantAddress } from '../_models/RestaurantAddress';
-import {  BsModalService, BsLocaleService, Utils } from 'ngx-bootstrap';
+import { BsModalService, BsLocaleService, Utils } from 'ngx-bootstrap';
 import { BsModalRef } from 'ngx-bootstrap/modal'
 //import { ModalService } from '../restaurant/modal/restaurantModal/restaurantModal.component';
 import {
@@ -136,15 +136,15 @@ export class RestaurantComponent implements OnInit {
         this.restaurant = Object.assign({}, this.registerForm.value);
         this.uploadImagem();
 
-        
+
         this.restaurant.environmentId = 'teste';
         // this.restaurant.images.push({ url: imagesToSave.url, extension: imagesToSave.extension });
         this.restaurantAddress.push({ address: this.registerForm.value.addressDescription, cityId: 1100015 });
         this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         // this.tmpImageToSave.url = this.file[0].name;
-        
-        
-        
+
+
+
         // this.imagesToSave.push(this.tmpImageToSave);
         // this.restaurant.images = Object.assign({}, this.imagesToSave);
         // this.restaurant.addresses.push(this.restaurantAddress);
@@ -164,9 +164,9 @@ export class RestaurantComponent implements OnInit {
           this.restaurantAddress.push({ address: 'novo', cityId: 1100015 });
           this.restaurant.addresses = Object.assign({}, this.restaurantAddress);
         }
-        
-          this.uploadImagem();
-        
+
+        this.uploadImagem();
+
         // this.imagesToSave.push(this.tmpImageToSave);
         // this.restaurant.images = Object.assign({}, this.imagesToSave);
         this.restaurantService.putRestaurant(this.restaurant).subscribe(
@@ -232,10 +232,10 @@ export class RestaurantComponent implements OnInit {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
-      this.file = event.target.files;      
+      this.file = event.target.files;
     }
   }
-  
+
 
   uploadImagem() {
     if (this.modoSalvar === 'post') {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Restaurant } from '../_models/Restaurant';
+import { Table } from '../_models/Table';
 
 @Injectable({
   providedIn: 'root'
@@ -38,10 +39,14 @@ export class RestaurantService {
   }
 
    postUpload(file: File, name: string) {
-    const fileToUplaod = <File>file[0];
+    const fileToUplaod = file[0] as File;
     const formData = new FormData();
     formData.append('file', fileToUplaod, name);
 
     return this.http.post(`${this.baseUrl}/upload`, formData);
-  }  
+  }
+
+  getTables(restaurantId: number): Observable<Table[]> {
+    return this.http.get<Table[]>(`${this.baseUrl}/tables/${restaurantId}`);
+  }
 }
