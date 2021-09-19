@@ -14,5 +14,7 @@ namespace WebRestaurantes.Domain
         void DeleteRange<T>(TEntity[] entity);
 
         Task<bool> SaveChangesAsync();
+
+        Task<List<TEntity>> GetAllAsync();
     }
 }

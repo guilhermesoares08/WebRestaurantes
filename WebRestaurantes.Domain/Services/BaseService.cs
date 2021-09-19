@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebRestaurantes.Domain
 {
@@ -24,6 +25,11 @@ namespace WebRestaurantes.Domain
         public void DeleteRange(TEntity[] entity)
         {
             _repository.DeleteRange<TEntity>(entity);
+        }
+
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await _repository.GetAllAsync();
         }
 
         public Task<bool> SaveChangesAsync()
