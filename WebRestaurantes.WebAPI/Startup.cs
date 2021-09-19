@@ -1,32 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using WebRestaurantes.Repository.DataContext;
-using WebRestaurantes.Repository.Interfaces;
-using WebRestaurantes.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
-using AutoMapper;
 using Microsoft.Extensions.FileProviders;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Identity;
-using WebRestaurantes.Domain.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System.IO;
 using System.Text;
+using WebRestaurantes.Domain;
+using WebRestaurantes.Domain.Identity;
+using WebRestaurantes.Repository;
+using WebRestaurantes.Repository.Interfaces;
 
 namespace WebRestaurantes.WebAPI
 {
@@ -44,6 +36,10 @@ namespace WebRestaurantes.WebAPI
         {
             services.AddDbContext<WebRestaurantesContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ProfileConnectionString")));
             services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            services.AddScoped<IRestaurantService, RestaurantService>();
+            //services.AddScoped<IBaseService<,>, BaseService<,>>();
+
             //services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
 
             services.AddMvc(options =>

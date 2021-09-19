@@ -1,0 +1,17 @@
+﻿using System.Threading.Tasks;
+
+namespace WebRestaurantes.Domain
+{
+    public interface IBaseService<TEntity> where TEntity : class
+    {
+        void Add(TEntity entity);
+
+        void Update(TEntity entity);
+
+        void Delete(TEntity entity);
+
+        void DeleteRange(TEntity[] entity);
+
+        Task<bool> SaveChangesAsync();
+    }
+}

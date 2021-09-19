@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebRestaurantes.Repository.DataContext;
-using WebRestaurantes.Repository.Interfaces;
-using WebRestaurantes.Domain;
-using AutoMapper;
-using WebRestaurantes.WebAPI.Dtos;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using WebRestaurantes.Domain;
+using WebRestaurantes.WebAPI.Dtos;
 
-namespace ProAgil.WebAPI.Controllers
+namespace WebRestaurantes.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class RestaurantController : ControllerBase
-    {
-        private readonly IWebRestaurantesRepository _repo;
+    {        
         private readonly IMapper _mapper;
+        private readonly IRestaurantService _restaurantService;
 
-        public RestaurantController(IWebRestaurantesRepository repo, IMapper mapper)
+        public RestaurantController(IRestaurantService restaurantService, IMapper mapper)
         {
-            _repo = repo;
+            _restaurantService = restaurantService;
             _mapper = mapper;
         }
 
@@ -36,7 +33,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetAllRestaurantAsync(true);
+                var results = await _restaurantService.GetAllRestaurantAsync(true);
 
                 var resultMap = _mapper.Map<IEnumerable<RestaurantDto>>(results);
 
@@ -55,7 +52,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetRestaurantAsyncById(id, true);
+                var results = await _restaurantService.GetRestaurantAsyncById(id, true);
                 var resultMap = _mapper.Map<RestaurantDto>(results);
 
                 return Ok(results);
@@ -75,7 +72,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetRestaurantAsyncByText(text);
+                var results = await _restaurantService.GetRestaurantAsyncByText(text);
 
                 return Ok(results);
             }
@@ -96,8 +93,8 @@ namespace ProAgil.WebAPI.Controllers
                 var resResult = _mapper.Map<Restaurant>(model);
                 resResult.CreateDate = DateTime.Now;
                 resResult.UpdateDate = DateTime.Now;
-                _repo.Add(resResult);
-                if (await _repo.SaveChangesAsync())
+                _restaurantService.Add(resResult);
+                if (await _restaurantService.SaveChangesAsync())
                 {
                     return Created($"/api/restaurant/{model.Id}", _mapper.Map<RestaurantDto>(model));
                 }
@@ -118,7 +115,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var rest = await _repo.GetRestaurantAsyncById(id);
+                var rest = await _restaurantService.GetRestaurantAsyncById(id);
                 if (rest == null) { return NotFound(); };
 
                 var idsAddressess = new List<int>();
@@ -129,14 +126,14 @@ namespace ProAgil.WebAPI.Controllers
                         addr => !idsAddressess.Contains(addr.Id)
                     ).ToArray();
 
-                    if (addressess.Length > 0) _repo.DeleteRange(addressess);
+                    //if (addressess.Length > 0) _repo.DeleteRange(addressess);
                 }
                 model.UpdateDate = DateTime.Now.ToString();
                 model.CreateDate = rest.CreateDate.ToString();
                 _mapper.Map(model, rest);
-                _repo.Update(rest);
+                _restaurantService.Update(rest);
 
-                if (await _repo.SaveChangesAsync())
+                if (await _restaurantService.SaveChangesAsync())
                 {
                     return Created($"/api/restaurant/{model.Id}", _mapper.Map<RestaurantDto>(rest));
                 }
@@ -155,12 +152,12 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var rest = await _repo.GetRestaurantAsyncById(id);
+                var rest = await _restaurantService.GetRestaurantAsyncById(id);
                 if (rest == null) return NotFound();
 
-                _repo.Delete(rest);
+                _restaurantService.Delete(rest);
 
-                if (await _repo.SaveChangesAsync())
+                if (await _restaurantService.SaveChangesAsync())
                 {
                     return Ok();
                 }
