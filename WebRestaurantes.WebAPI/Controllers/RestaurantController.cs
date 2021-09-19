@@ -19,10 +19,12 @@ namespace WebRestaurantes.WebAPI.Controllers
     {        
         private readonly IMapper _mapper;
         private readonly IRestaurantService _restaurantService;
+        private readonly IRestaurantAddressService _restaurantAddressService;
 
-        public RestaurantController(IRestaurantService restaurantService, IMapper mapper)
+        public RestaurantController(IRestaurantService restaurantService, IRestaurantAddressService restaurantAddressService, IMapper mapper)
         {
             _restaurantService = restaurantService;
+            _restaurantAddressService = restaurantAddressService;
             _mapper = mapper;
         }
 
@@ -126,7 +128,7 @@ namespace WebRestaurantes.WebAPI.Controllers
                         addr => !idsAddressess.Contains(addr.Id)
                     ).ToArray();
 
-                    //if (addressess.Length > 0) _repo.DeleteRange(addressess);
+                    if (addressess.Length > 0) _restaurantAddressService.DeleteRange(addressess);
                 }
                 model.UpdateDate = DateTime.Now.ToString();
                 model.CreateDate = rest.CreateDate.ToString();
