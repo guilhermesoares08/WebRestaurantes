@@ -40,8 +40,11 @@ namespace WebRestaurantes.WebAPI
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-            services.AddScoped<IRestaurantAddressService, IRestaurantAddressService>();
+            services.AddScoped<IRestaurantAddressService, RestaurantAddressService>();
             services.AddScoped<IRestaurantAddressRepository, RestaurantAddressRepository>();
+
+            services.AddScoped<IDomainRepository, DomainRepository>();
+            services.AddScoped<IDomainService, DomainService>();
 
             services.AddMvc(options =>
             {

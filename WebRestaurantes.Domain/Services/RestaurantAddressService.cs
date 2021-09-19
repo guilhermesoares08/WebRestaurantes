@@ -1,4 +1,4 @@
-﻿namespace WebRestaurantes.Domain.Services
+﻿namespace WebRestaurantes.Domain
 {
     public class RestaurantAddressService : BaseService<RestaurantAddress, IRestaurantAddressRepository>, IRestaurantAddressService
     {
