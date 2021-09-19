@@ -40,6 +40,9 @@ namespace WebRestaurantes.WebAPI
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
+            services.AddScoped<IRestaurantAddressService, IRestaurantAddressService>();
+            services.AddScoped<IRestaurantAddressRepository, RestaurantAddressRepository>();
+
             services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
