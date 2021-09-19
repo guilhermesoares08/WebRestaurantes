@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Domain;
 
-namespace WebRestaurantes.Repository.Repositories
+namespace WebRestaurantes.Repository
 {
     public class RestaurantAddressRepository : BaseRepository<RestaurantAddress>, IRestaurantAddressRepository
     {
