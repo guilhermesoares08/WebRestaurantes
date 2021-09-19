@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebRestaurantes.Repository.DataContext;
+using WebRestaurantes.Repository;
 using WebRestaurantes.Repository.Interfaces;
 using WebRestaurantes.Domain;
 using AutoMapper;
@@ -20,11 +20,12 @@ namespace WebRestaurantes.WebAPI.Controllers
     public class SchedulingController: ControllerBase
     {
         private readonly IWebRestaurantesRepository _repo;
+        private readonly IRestaurantRepository _restaurantRepository;
         private readonly IMapper _mapper;
 
-        public SchedulingController(IWebRestaurantesRepository repo, IMapper mapper)
+        public SchedulingController(IRestaurantRepository restaurantRepository, IMapper mapper)
         {
-            _repo = repo;
+            _restaurantRepository = restaurantRepository;
             _mapper = mapper;
         }
          
@@ -34,7 +35,7 @@ namespace WebRestaurantes.WebAPI.Controllers
         {
             try
             {                
-                var results = await _repo.GetScheduleByRestaurant(restaurantId);
+                var results = await _restaurantRepository.GetScheduleByRestaurant(restaurantId);
 
                 return Ok(results);
             }

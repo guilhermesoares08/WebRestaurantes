@@ -1,11 +1,10 @@
-using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Domain;
 using WebRestaurantes.Domain.Identity;
 
-namespace WebRestaurantes.Repository.DataContext
+namespace WebRestaurantes.Repository
 {
     public class WebRestaurantesContext : IdentityDbContext<Domain.Identity.User, Role, int,
                                                     IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,

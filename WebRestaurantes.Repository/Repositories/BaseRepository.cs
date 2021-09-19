@@ -1,33 +1,29 @@
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using WebRestaurantes.Domain;
-using WebRestaurantes.Repository;
-using System.Text.Json.Serialization;
-using System;
 
 namespace WebRestaurantes.Repository
 {
-    public class WebRestaurantesRepository : Interfaces.IWebRestaurantesRepository
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         private readonly WebRestaurantesContext _webRestaurantesContext;
-        public WebRestaurantesRepository(WebRestaurantesContext WebRestaurantesContext)
+        public BaseRepository(WebRestaurantesContext webRestaurantesContext)
         {
-            _webRestaurantesContext = WebRestaurantesContext;
+            _webRestaurantesContext = webRestaurantesContext;
             _webRestaurantesContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
-        public void Add<T>(T entity) where T : class
+
+        public void Add<T>(TEntity entity) 
         {
             _webRestaurantesContext.Add(entity);
         }
 
-        public void Delete<T>(T entity) where T : class
+        public void Delete<T>(TEntity entity)
         {
             _webRestaurantesContext.Remove(entity);
         }
 
-        public void Update<T>(T entity) where T : class
+        public void Update<T>(TEntity entity) 
         {
             _webRestaurantesContext.Update(entity);
         }
@@ -37,13 +33,9 @@ namespace WebRestaurantes.Repository
             return (await _webRestaurantesContext.SaveChangesAsync()) > 0;
         }
 
-        public void DeleteRange<T>(T[] entityArray) where T : class
+        public void DeleteRange<T>(TEntity[] entityArray)
         {
             _webRestaurantesContext.RemoveRange(entityArray);
         }
-
-        
-
-        
     }
 }
