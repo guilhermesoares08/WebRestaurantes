@@ -1,4 +1,4 @@
-﻿namespace WebRestaurantes.Domain.Interfaces
+﻿namespace WebRestaurantes.Domain
 {
     public interface IRestaurantAddressService : IBaseService<RestaurantAddress>
     {
