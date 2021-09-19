@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebRestaurantes.Domain;
 
@@ -7,10 +8,11 @@ namespace WebRestaurantes.Repository
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         private readonly WebRestaurantesContext _webRestaurantesContext;
+
         public BaseRepository(WebRestaurantesContext webRestaurantesContext)
         {
             _webRestaurantesContext = webRestaurantesContext;
-            _webRestaurantesContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            _webRestaurantesContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;            
         }
 
         public void Add<T>(TEntity entity) 
@@ -36,6 +38,11 @@ namespace WebRestaurantes.Repository
         public void DeleteRange<T>(TEntity[] entityArray)
         {
             _webRestaurantesContext.RemoveRange(entityArray);
+        }
+
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await _webRestaurantesContext.Set<TEntity>().ToListAsync();
         }
     }
 }
