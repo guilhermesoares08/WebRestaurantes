@@ -38,9 +38,7 @@ namespace WebRestaurantes.WebAPI
             services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
             services.AddScoped<IRestaurantService, RestaurantService>();
-            //services.AddScoped<IBaseService<,>, BaseService<,>>();
-
-            //services.AddScoped<IWebRestaurantesRepository, WebRestaurantesRepository>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
             services.AddMvc(options =>
             {
